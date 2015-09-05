@@ -4,14 +4,28 @@ Scripts and config files associated with my blog post "Raspberry Pi 2 cluster wi
 
 The brief summary is as follows:
 
-```wget https://github.com/darrenjw/blog/archive/master.zip```
-
 Create a cluster by connecting a bunch of Pis to a switch via the Pis ethernet port. Pick one of the Pis to be a head node and NAT router. Connect a USB ethernet dongle to this Pi, and use the dongle port as the internet uplink.
 
 Stick Raspbian on each node, with SSH server enabled.
 
-Boot up the head node, and run "make-head-node".
+Boot up the head node.
 
-Boot up the other nodes and then run "cluster-setup" on the head node.
+```
+wget https://github.com/darrenjw/blog/archive/master.zip
+unzip master.zip
+cd blog-master/pi-cluster
+```
+
+sh install-packages
+
+will reboot when done. On reboot, re-enter same directory, and then do:
+
+sudo sh setup-network
+
+when done, will reboot.
+
+On reboot, re-enter same directory.
+
+Boot up the other nodes and then run "sh cluster-setup" on the head node.
 
 
