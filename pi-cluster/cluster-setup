@@ -1,0 +1,12 @@
+#!/bin/sh
+
+ssh-keygen
+
+sh map-network
+sh copy-keys
+
+parallel-ssh -h workers.txt sudo apt-get update && sudo apt-get upgrade
+
+# eof
+
+

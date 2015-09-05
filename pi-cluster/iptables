@@ -1,0 +1,8 @@
+#!/bin/sh
+
+iptable-restore < /etc/iptables.up.rules
+
+exit 0
+
+# eof
+

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+sh install-packages
+sh setup-network
+
+# eof
+
+
