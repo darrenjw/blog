@@ -1,7 +1,8 @@
 #!/bin/sh
 
-sudo apt-get update && sudo apt-get upgrade
-sudo apt-get install nmap isc-dhcp-server pssh
+apt-get update && sudo apt-get upgrade
+apt-get install nmap isc-dhcp-server pssh
+reboot
 
 # eof
 

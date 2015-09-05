@@ -10,22 +10,23 @@ Stick Raspbian on each node, with SSH server enabled.
 
 Boot up the head node.
 
-```
+```bash
 wget https://github.com/darrenjw/blog/archive/master.zip
 unzip master.zip
 cd blog-master/pi-cluster
+sudo sh install-packages
 ```
-
-sh install-packages
 
 will reboot when done. On reboot, re-enter same directory, and then do:
 
-sudo sh setup-network
+'''sudo sh setup-network'''
 
 when done, will reboot.
 
-On reboot, re-enter same directory.
+On reboot, re-enter same directory. Boot up the other nodes and then run 
 
-Boot up the other nodes and then run "sh cluster-setup" on the head node.
+'''sh cluster-setup'''
+
+on the head node.
 
 
