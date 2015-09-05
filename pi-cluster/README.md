@@ -19,13 +19,13 @@ sudo sh install-packages
 
 will reboot when done. On reboot, re-enter same directory, and then do:
 
-'''sudo sh setup-network'''
+```sudo sh setup-network```
 
 when done, will reboot.
 
 On reboot, re-enter same directory. Boot up the other nodes and then run 
 
-'''sh cluster-setup'''
+```sh cluster-setup```
 
 on the head node.
 
