@@ -25,7 +25,7 @@ when done, will reboot.
 
 On reboot, re-enter same directory. Boot up the other nodes and then run 
 
-```sh cluster-setup```
+```sh setup-cluster```
 
 on the head node.
 
