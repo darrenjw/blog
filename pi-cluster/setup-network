@@ -5,8 +5,8 @@ cp interfaces /etc/network/
 /etc/init.d/networking restart
 
 # DHCP server
-cp /etc/dhcpd/dhcpd.conf /etc/dhcpd/dhcpd.conf.old
-cp dhcpd.conf /etc/dhcpd/
+cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.old
+cp dhcpd.conf /etc/dhcp/
 /etc/init.d/isc-dhcp-server restart
 
 # NAT routing
