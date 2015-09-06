@@ -1,6 +1,6 @@
 #!/bin/sh
 
-iptable-restore < /etc/iptables.up.rules
+iptables-restore < /etc/iptables.up.rules
 
 exit 0
 
