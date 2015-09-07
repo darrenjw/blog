@@ -4,9 +4,7 @@ ssh-keygen
 
 sh map-network
 sh copy-keys
-
-parallel-ssh -h workers.txt -t 0 -P sudo apt-get update
-parallel-ssh -h workers.txt -t 0 -P sudo apt-get -y upgrade
+sh upgrade-workers
 
 # eof
 

@@ -1,0 +1,8 @@
+#!/bin/sh
+
+parallel-ssh -h workers.txt -t 0 -P sudo apt-get update
+parallel-ssh -h workers.txt -t 0 -P sudo apt-get -y upgrade
+
+# eof
+
+
