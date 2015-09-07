@@ -1,0 +1,7 @@
+#!/bin/sh
+
+parallel-ssh -h workers.txt -t 0 -p 100 -P sudo shutdown -h now
+
+# eof
+
+
