@@ -7,6 +7,7 @@ cp interfaces /etc/network/
 # DHCP server
 cp /etc/dhcp/dhcpd.conf /etc/dhcp/dhcpd.conf.old
 cp dhcpd.conf /etc/dhcp/
+echo 'INTERFACES="eth0"' >> /etc/default/isc-dhcp-server
 /etc/init.d/isc-dhcp-server restart
 
 # NAT routing
