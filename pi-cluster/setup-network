@@ -16,7 +16,7 @@ echo "net.ipv4.ip_forward=1" >> /etc/sysctl.conf
 iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
 # TODO: add more rules here for extra security...
 
-ifdown eth1 && sudo ifup eth1
+ifdown eth1 && ifup eth1
 iptables-save > /etc/iptables.up.rules
 
 cp iptables /etc/network/if-pre-up.d/
