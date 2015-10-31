@@ -1,4 +1,4 @@
-name := "breeze-test"
+name := "currying"
 
 version := "0.1"
 
