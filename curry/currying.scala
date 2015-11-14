@@ -21,6 +21,16 @@ object Currying
   def main(args: Array[String]): Unit = {
     println("Hello")
 
+
+    val l1 = List(1,2,3)
+    val l2 = 4 :: l1
+    println(l2)
+    val l3 = l2 map { x => x*x }
+    println(l3)
+    val l4 = l2.map(x => x*x)
+    println(l4)
+
+
     plotFun(x => x*x)
 
     def myQuad1(x: Double): Double = x*x - 2*x + 1
