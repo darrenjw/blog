@@ -30,7 +30,6 @@ object Currying
     val l4 = l2.map(x => x*x)
     println(l4)
 
-
     plotFun(x => x*x)
 
     def myQuad1(x: Double): Double = x*x - 2*x + 1
