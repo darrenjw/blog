@@ -1,7 +1,9 @@
 # HOFs, closures, partial application and Currying to solve the function environment problem in Scala
 
 
-Code examples for the blog post:  _I will put the link to the post here when it goes live_
+Code examples for the blog post: 
+
+https://darrenjw.wordpress.com/2015/11/16/hofs-closures-partial-application-and-currying-to-solve-the-function-environment-problem-in-scala/
 
 The main example is in Scala, though there is also an R script which illustrates how similar concepts apply to the R language.
 
