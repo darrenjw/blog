@@ -9,6 +9,7 @@ object FirstMonads {
 
   def main(args: Array[String]): Unit = {
     println("Hello")
+
     val x = (0 to 4).toList
     println(x)
     val x2 = x map { x => x * 3 }
@@ -38,6 +39,10 @@ object FirstMonads {
       yi <- y
     } yield (xi * yi)
     println(xy2)
+
+
+
+
     println("Goodbye")
   }
 
