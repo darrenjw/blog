@@ -1,5 +1,4 @@
-# HOFs, closures, partial application and Currying to solve the function environment problem in Scala
-
+# First steps with monads in Scala
 
 Code examples for the blog post: 
 
@@ -33,6 +32,9 @@ on Linux and similar systems (including Macs). If you want to be able to experim
 The sbt launcher script will download and run sbt, which will then download scala, the scala compiler, scala standard libraries and all dependencies needed to compile and run the code. All the downloaded files will be cached on your system for future use. Therefore, make sure you have a good internet connection and a bit of free disk space before running sbt for the first time.
 
 Assuming you can run sbt, just typing `run` at the sbt prompt will compile and run the example code. Typing `console` will give a Scala REPL with a properly configured classpath including all dependencies. You can type scala expressions directly into the REPL just as you would in your favourite dynamic math/stat language. Type `help` at the sbt prompt for help on sbt. Type `:help` at the Scala REPL for help on the REPL.
+
+The best way to follow the blog post is to copy-and-paste lines of code directly from the blog post to the sbt `console`.
+
 
 
 
