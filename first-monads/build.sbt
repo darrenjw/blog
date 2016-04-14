@@ -8,8 +8,7 @@ libraryDependencies  ++= Seq(
             "org.scalacheck" %% "scalacheck" % "1.11.4" % "test",
             "org.scalatest" %% "scalatest" % "2.1.7" % "test",
             "org.scalanlp" %% "breeze" % "0.11.2",
-            "org.scalanlp" %% "breeze-natives" % "0.11.2",
-            "org.scalanlp" %% "breeze-viz" % "0.11.2"
+            "org.scalanlp" %% "breeze-natives" % "0.11.2"
 )
 
 resolvers ++= Seq(
