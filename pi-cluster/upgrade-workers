@@ -2,6 +2,7 @@
 
 parallel-ssh -h workers.txt -t 0 -p 100 -P sudo apt-get update
 parallel-ssh -h workers.txt -t 0 -p 100 -P sudo apt-get -y upgrade
+parallel-ssh -h workers.txt -t 0 -p 100 -P sudo apt-get clean
 parallel-ssh -h workers.txt -t 0 -p 100 -P sudo reboot
 
 # eof
