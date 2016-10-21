@@ -18,6 +18,11 @@ FORCE:
 %.scala: %.md
 	sed -n '/^```scala/,/^```/ p' < $< | sed 's/^```.*//g' > $@
 
+view: DraftPost.pdf
+	xdg-open DraftPost.pdf
+
+view-html: DraftPost.html
+	xdg-open DraftPost.html
 
 clean:
 	rm -rf *~ $(TARGETS)
