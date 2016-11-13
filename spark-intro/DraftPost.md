@@ -7,7 +7,7 @@
 sudo apt-get update
 sudo apt-get install openjdk-8-jdk
 
-wget http://www.eu.apache.org/dist//spark/spark-2.0.0/spark-2.0.0-bin-hadoop2.7.tgz
+wget http://www.eu.apache.org/dist/spark/spark-2.0.2/spark-2.0.2-bin-hadoop2.7.tgz
 tar xvfz spark-2.0.0-bin-hadoop2.7.tgz 
 cd spark-2.0.0-bin-hadoop2.7
 bin/run-example SparkPi 10
