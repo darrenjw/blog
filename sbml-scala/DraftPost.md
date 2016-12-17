@@ -1,5 +1,7 @@
 # Working with SBML using Scala
 
+*This is a draft of a post that will go on my blog. I'll put a link to it from here after posting. This draft is not the definitive version.*
+
 ## Introduction
 
 The <a href="http://sbml.org/">Systems Biology Markup Language (SBML)</a> is an <a href="https://en.wikipedia.org/wiki/XML">XML</a>-based format for representation and exchange of biochemical network models. SBML is supported by most systems biology modelling tools, allowing the export of a model in SBML from one tool and then reading in another tool. Because it offers a standard way of representing biochemical networks in an unambiguous way, it can also be used as the standard way of representing models in databases of biochemical network models, such as <a href="https://www.ebi.ac.uk/biomodels-main/">BioModels</a>. I haven't talked about SBML much in this blog, so far, but I discuss it in detail in my book, <a href="http://www.staff.ncl.ac.uk/d.j.wilkinson/smfsb/">Stochastic modelling for systems biology</a>. SBML is a "good thing", and everyone who works with (deterministic or stochastic) biochemical network models should know a bit about it.
@@ -23,15 +25,17 @@ libraryDependencies ++= Seq(
 ```
 to the build file is sufficient to make everything work properly.
 
+**Example**
 
+**Discussion of Unit**
 
-
+**Further reading**
 
 This complete runnable example is available in my <a href="https://github.com/darrenjw/blog/tree/master/sbml-scala">blog repo</a> on github. This example will run on any system with a recent JVM installed. It does not require Scala, or libSBML, or JSBML, or any other dependency. 
 
 ## Conclusion
 
-
+**Brief wrap-up**
 
 
 
