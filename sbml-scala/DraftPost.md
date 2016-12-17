@@ -64,11 +64,11 @@ import org.sbml.jsbml.{ Unit => JsbmlUnit }
 ```
 Then in code it is clear that `Unit` refers to the Scala type and `JsbmlUnit` refers to the JSBML class. 
 
-Also note that `JavaConversions` has been imported. This provides an implicit conversion from a Java to a Scala iterator, and this simplifies iterating over SBML `listOf`s. Here is used it to implicitly convert the `listOfSpecies` Java iterator into a Scala iterator so that I can call `foreach` on it.
+Also note that `JavaConversions` has been imported. This provides an implicit conversion from a Java to a Scala iterator, and this simplifies iterating over SBML `listOf`s. Here it is used it to implicitly convert the `listOfSpecies` Java iterator into a Scala iterator so that I can call `foreach` on it.
 
 ### Further reading
 
-This complete runnable example is available in my <a href="https://github.com/darrenjw/blog/tree/master/sbml-scala">blog repo</a> on github. This example will run on any system with a recent JVM installed. It does not require Scala, or libSBML, or JSBML, or any other dependency. 
+This complete runnable example is available in my <a href="https://github.com/darrenjw/blog/tree/master/sbml-scala">blog repo</a> on github. This example will run on any system with a recent JVM installed. It does not require Scala, or libSBML, or JSBML, or any other dependency (sbt will take care of dependency resolution). 
 
 Once you are up and running with a simple example like this, the <a href="http://sbml.org/Software/JSBML/docs">JSBML Documentation</a> is fine. Start by reading the <a href="https://github.com/sbmlteam/jsbml/raw/master/doc/user_guide/User_Guide.pdf">User guide</a> and then use the <a href="http://sbml.org/Special/Software/JSBML/latest-stable/build/apidocs/">API Documentation</a>.
 
