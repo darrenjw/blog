@@ -10,6 +10,8 @@ The SBML format is fairly complex to parse and generate correctly, so it's prefe
 
 ## Using JSBML from Scala sbt projects
 
+### Dependencies in sbt
+
 Since JSBML is now on Maven Central, adding a dependency on it should just be a matter of adding the line
 ```scala
 libraryDependencies += "org.sbml.jsbml" % "jsbml" % "1.2"
@@ -24,6 +26,8 @@ libraryDependencies ++= Seq(
 			)
 ```
 to the build file is sufficient to make everything work properly.
+
+### Example Scala program
 
 Below is a complete Scala program to read an SBML file from disk and print to console some very basic information about the model.
 ```scala
@@ -54,22 +58,23 @@ object JsbmlApp {
 
 }
 ```
-There are just a few things worth noting about this simple example. The first gotcha is to try and resist the temptation to import all SBML classes into the namespace. This is poor programming practice at the best of times, but here it is especially problematic. Scala programmers will be aware that `Unit` is a very important type in the Scala language, which has nothing to do with the JSBML class `Unit`, which represents a physical unit of measurement. The clash can be avoided by using the fully qualified name, `org.sbml.jsbml.Unit` wherever the JSBML `Unit` class is intended, but that is rather cumbersome, so the typical Scala mechanism for dealing with this is to rename the class on import, using, for example:
+There are just a few things worth noting about this simple example. The first gotcha is to try and resist the temptation to import all SBML classes into the namespace (with `import org.sbml.jsbml._`). This is poor programming practice at the best of times, but here it is especially problematic. Scala programmers will be aware that `Unit` is a very important type in the Scala language, which has nothing to do with the JSBML class `Unit`, which represents a physical unit of measurement. The clash can be avoided by using the fully qualified name, `org.sbml.jsbml.Unit` wherever the JSBML `Unit` class is intended, but that is rather cumbersome, so the typical Scala mechanism for dealing with this is to rename the class on import, using, for example:
 ```scala
 import org.sbml.jsbml.{ Unit => JsbmlUnit }
 ```
 Then in code it is clear that `Unit` refers to the Scala type and `JsbmlUnit` refers to the JSBML class. 
 
-Also note that `JavaConversions` has been imported. This provides an implicit conversion from a Java to a Scala iterator, and this simplifies iterating over SBML `listOf`s. Here is use it to implicitly convert the `listOfSpecies` iterator into a Scala iterator so that I can call `foreach` on it.
+Also note that `JavaConversions` has been imported. This provides an implicit conversion from a Java to a Scala iterator, and this simplifies iterating over SBML `listOf`s. Here is used it to implicitly convert the `listOfSpecies` Java iterator into a Scala iterator so that I can call `foreach` on it.
 
-**Further reading**
+### Further reading
 
 This complete runnable example is available in my <a href="https://github.com/darrenjw/blog/tree/master/sbml-scala">blog repo</a> on github. This example will run on any system with a recent JVM installed. It does not require Scala, or libSBML, or JSBML, or any other dependency. 
 
+Once you are up and running with a simple example like this, the <a href="http://sbml.org/Software/JSBML/docs">JSBML Documentation</a> is fine. Start by reading the <a href="https://github.com/sbmlteam/jsbml/raw/master/doc/user_guide/User_Guide.pdf">User guide</a> and then use the <a href="http://sbml.org/Special/Software/JSBML/latest-stable/build/apidocs/">API Documentation</a>.
+
 ## Conclusion
 
-**Brief wrap-up**
-
+Working with SBML in Scala is quite convenient using JSBML. It is easy to include a dependence on JSBML in Scala sbt projects. JSBML has a typical Java Object-Oriented API that is somewhat unnatural in Scala, but isn't too bad using a few tricks, such as implicit iterator conversion. It wouldn't be very difficult to layer a more functional API on top of JSBML, but I don't have the energy to do that. See my <a href="https://github.com/darrenjw/blog/tree/master/sbml-scala">blog repo</a> for the full runnable example.
 
 
 
