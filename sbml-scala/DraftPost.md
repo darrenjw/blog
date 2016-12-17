@@ -1,6 +1,6 @@
 # Working with SBML using Scala
 
-*This is a draft of a post that will go on my blog. I'll put a link to it from here after posting. This draft is not the definitive version.*
+*This is a draft of a post that is now on my blog <a href="https://darrenjw.wordpress.com/2016/12/17/working-with-sbml-using-scala/">here</a>. This draft is not the definitive version.*
 
 ## Introduction
 
