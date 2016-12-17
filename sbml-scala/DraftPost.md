@@ -8,7 +8,26 @@ The SBML format is fairly complex to parse and generate correctly, so it's prefe
 
 ## Using JSBML from Scala sbt projects
 
+Since JSBML is now on Maven Central, adding a dependency on it should just be a matter of adding the line
+```scala
+libraryDependencies += "org.sbml.jsbml" % "jsbml" % "1.2"
+```
+to your sbt `build.sbt` file. However, for slightly mysterious reasons this doesn't quite work. It works fine for compilation, but at runtime some dependencies are missing. I suspect this is a slight problem with the current JSBML build, but it could also be a bug/feature in sbt. Either way, the problem can be solved by explicitly including <a href="http://logging.apache.org/log4j/2.x/">log4j</a> dependencies in the build. So just adding:
+```scala
+libraryDependencies ++= Seq(
+		"org.sbml.jsbml" % "jsbml" % "1.2",
+		"org.apache.logging.log4j" % "log4j-1.2-api" % "2.3",
+		"org.apache.logging.log4j" % "log4j-api" % "2.3",
+		"org.apache.logging.log4j" % "log4j-core" % "2.3"
+			)
+```
+to the build file is sufficient to make everything work properly.
 
+
+
+
+
+This complete runnable example is available in my <a href="https://github.com/darrenjw/blog/tree/master/sbml-scala">blog repo</a> on github. This example will run on any system with a recent JVM installed. It does not require Scala, or libSBML, or JSBML, or any other dependency. 
 
 ## Conclusion
 
