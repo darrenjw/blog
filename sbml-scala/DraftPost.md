@@ -25,9 +25,42 @@ libraryDependencies ++= Seq(
 ```
 to the build file is sufficient to make everything work properly.
 
-**Example**
+Below is a complete Scala program to read an SBML file from disk and print to console some very basic information about the model.
+```scala
+object JsbmlApp {
+  import org.sbml.jsbml.SBMLReader
+  import scala.collection.JavaConversions._
 
-**Discussion of Unit**
+  def main(args: Array[String]): Unit = {
+    val filename = if (args.length == 0)
+      "ch07-mm-stoch.xml" else args(0)
+    val reader = new SBMLReader
+    val document = reader.readSBML(filename)
+    val model = document.getModel
+    println(model.getId + "\n" + model.getName)
+    val listOfSpecies = model.getListOfSpecies
+    val ns = model.getNumSpecies
+    println(s"$ns Species:")
+    listOfSpecies.iterator.foreach(species => {
+      println("  " +
+        species.getId + "\t" +
+        species.getName + "\t" +
+        species.getCompartment + "\t" +
+        species.getInitialAmount)
+    })
+    val nr = model.getNumReactions
+    println(s"$nr Reactions.")
+  }
+
+}
+```
+There are just a few things worth noting about this simple example. The first gotcha is to try and resist the temptation to import all SBML classes into the namespace. This is poor programming practice at the best of times, but here it is especially problematic. Scala programmers will be aware that `Unit` is a very important type in the Scala language, which has nothing to do with the JSBML class `Unit`, which represents a physical unit of measurement. The clash can be avoided by using the fully qualified name, `org.sbml.jsbml.Unit` wherever the JSBML `Unit` class is intended, but that is rather cumbersome, so the typical Scala mechanism for dealing with this is to rename the class on import, using, for example:
+```scala
+import org.sbml.jsbml.{ Unit => JsbmlUnit }
+```
+Then in code it is clear that `Unit` refers to the Scala type and `JsbmlUnit` refers to the JSBML class. 
+
+Also note that `JavaConversions` has been imported. This provides an implicit conversion from a Java to a Scala iterator, and this simplifies iterating over SBML `listOf`s. Here is use it to implicitly convert the `listOfSpecies` iterator into a Scala iterator so that I can call `foreach` on it.
 
 **Further reading**
 
