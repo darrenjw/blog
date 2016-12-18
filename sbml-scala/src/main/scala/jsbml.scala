@@ -9,8 +9,7 @@ object JsbmlApp {
   import scala.collection.JavaConversions._
 
   def main(args: Array[String]): Unit = {
-    val filename = if (args.length == 0)
-      "ch07-mm-stoch.xml" else args(0)
+    val filename = args.headOption.getOrElse("ch07-mm-stoch.xml")
     val reader = new SBMLReader
     val document = reader.readSBML(filename)
     val model = document.getModel
