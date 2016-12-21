@@ -1,4 +1,4 @@
-# Pi Rabbit-cam
+# Raspberry Pi Rabbit Hutch-cam
 
 This is the repo associated with blog post:
 
