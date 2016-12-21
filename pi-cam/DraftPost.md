@@ -45,11 +45,7 @@ Next set up the web-site by running:
 ./web-setup.sh
 ```
 
-Reboot with `sudo reboot` and log back in again after 30 seconds and then return to the pi-cam directory with:
-```bash
-cd blog-master/pi-cam/
-```
-First check that photos start to appear every 15 seconds or so:
+Reboot with `sudo reboot` and log back in again after 30 seconds. Check that photos start to appear every 15 seconds or so:
 ```bash
 ls -l ~/timelapse/
 ```
