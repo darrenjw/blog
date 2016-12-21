@@ -29,7 +29,7 @@ auth.backend.plain.userfile = "/home/pi/lighttpdpwd"
 auth.require = ( "/" =>
 (
 "method" => "basic",
-"realm" => "Joey cam",
+"realm" => "Rabbit-cam",
 "require" => "user=joey"
 )
 )
