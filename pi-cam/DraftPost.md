@@ -1,5 +1,7 @@
 # Raspberry Pi Rabbit Hutch-cam
 
+**This is the draft of a post [now published here](https://darrenjw2.wordpress.com/2016/12/21/raspberry-pi-rabbit-hutch-cam/) - this is not the definitive version.**
+
 *This post describes how to setup a Rasberry Pi with a Pi camera board and a (wireless) internet connection as a webcam serving a latest image (updated every 15 seconds) and a short timelapse containing the most recent hour of images in a 20 second movie (updated once per hour). The website has basic password protection. I've set it up to monitor a rabbit hutch, but obviously there are other potential applications. There isn't anything very novel here - this post serves mainly to document my setup in case I ever need to set it up again, which seems likely, as we've just ordered a Pi Noir camera for additional night-time monitoring...*
 
 ## Introduction
