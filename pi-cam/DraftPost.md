@@ -91,7 +91,7 @@ Test it out and find diagnostic information in `/var/log/lighttpd/`.
 
 ## Opening up
 
-You need to open up ports on your router to allow access to the Pi from outside your home network. This is router-specific, so you may want to just google for instructions for you router. Note that I have another public-facing web server on my home network, so I map port 81 on my router to port 80 on the Pi to have a public facing webcam on port 81 of my home network address (`http://my.home.address:81`, where *my.home.address* is replaced appropriately).
+You need to open up ports on your router to allow access to the Pi from outside your home network. This is router-specific, so you may want to just google for instructions for your router. Note that I have another public-facing web server on my home network, so I map port 81 on my router to port 80 on the Pi to have a public facing webcam on port 81 of my home network address (`http://my.home.address:81`, where *my.home.address* is replaced appropriately).
 
 ## Customisation
 
