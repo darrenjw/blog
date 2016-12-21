@@ -1,13 +1,12 @@
 # camera-setup.sh
 # script to run once to set up camera
 
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install avconv mencoder
+sudo apt-get -y update
+sudo apt-get -y upgrade
+sudo apt-get -y install avconv mencoder
 
+mkdir ~/timelapse
 
 sudo raspi-config
-
-
 
 # eof

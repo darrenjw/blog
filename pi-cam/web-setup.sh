@@ -1,9 +1,8 @@
 # web-setup.sh
 # run-once web setup script
 
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install lighttpd
+sudo apt-get -y update
+sudo apt-get -y install lighttpd
 
 sudo chown www-data:www-data /var/www
 sudo chmod 775 /var/www
