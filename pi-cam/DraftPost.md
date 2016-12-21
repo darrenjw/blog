@@ -12,7 +12,7 @@ The final requirement was that Joey-cam should be accessible from anywhere over 
 
 ## Pre-requisites
 
-I'm assuming a Pi (doesn't really matter which), with a Pi camera board attached, a clean Raspbian install, and some kind of internet connection. Mine has wifi (via a small USB wifi dongle), which is very convenient given it's location. It also needs to have an SSH server enabled, so that you can log into it from another machine. I'm assuming that the reader understands how to do all this already. This post is about the camera and web server setup.
+I'm assuming a Pi (doesn't really matter which), with a Pi camera board attached, a clean Raspbian install, and some kind of internet connection. Mine has wifi (via a small USB wifi dongle), which is very convenient given its location. It also needs to have an SSH server enabled, so that you can log into it from another machine. I'm assuming that the reader understands how to do all this already. This post is about the camera and web server setup.
 
 ## Set up
 
