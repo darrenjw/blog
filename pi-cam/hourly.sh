@@ -2,9 +2,6 @@
 # hourly cron
 # NB. Can take over half an hour to run, so shouldn't run more than once per hour
 
-# cron:
-# 20 * * * * /home/pi/hourly.sh
-
 cd ~/timelapse
 
 # Delete images older than an hour
