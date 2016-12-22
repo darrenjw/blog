@@ -1,6 +1,6 @@
 # Scala for Data Science [book review]
 
-*This is the draft of a post that will eventually appear on my blog. I'll put the link here when I post. This is not the definitive version.*
+*This is the draft of my blog post: https://darrenjw.wordpress.com/2016/12/22/scala-for-data-science-book-review/ - This is not the definitive version.*
 
 This post will review the book:
 
