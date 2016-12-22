@@ -1,6 +1,6 @@
 # Books on Scala for statistical computing and data science
 
-*This is the draft of a post that will eventually appear on my blog. I'll put the link here when I post. This is not the definitive version.*
+*This is the draft of a blog post: https://darrenjw.wordpress.com/2016/12/22/books-on-scala-for-statistical-computing-and-data-science/ - This is not the definitive version.*
 
 ## Introduction
 
