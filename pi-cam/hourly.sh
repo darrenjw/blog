@@ -4,20 +4,16 @@
 
 cd ~/timelapse
 
-# Delete images older than an hour
-find . -name tl-\*.jpg -type f -mmin +60 -delete
+# Delete images older than an hour (don't actually need)
+# find . -name tl-\*.jpg -type f -mmin +60 -delete
 
 # Make stills into a movie:
-ls *.jpg > stills.txt
-rm -f timelapse.avi
-mencoder -nosound -ovc lavc -lavcopts vcodec=mpeg4:aspect=16/9:vbitrate=8000000 -vf scale=640:-1 -o timelapse.avi -mf type=jpeg:fps=12 mf://@stills.txt
-
-# Turn into a movie that will view on android devices:
-avconv -i timelapse.avi -vf scale=640:-1 timelapse.mp4
+ls *.jpg | awk 'BEGIN{ a=0 }{ printf "mv %s tlsn-%04d.jpg\n", $0, a++ }' | bash
+avconv -y -r 10 -i tlsn-%4d.jpg -r 10 -vcodec libx264 -q:v 3 -vf scale=640:480 timelapse.mp4;
+rm -f tlsn-*.jpg
 
 # move to web for serving:
-mv timelapse.mp4 /var/www/
-
+mv timelapse.mp4 /var/www/html/
 
 # eof 
 

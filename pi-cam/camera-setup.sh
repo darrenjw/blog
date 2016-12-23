@@ -3,7 +3,7 @@
 
 sudo apt-get -y update
 sudo apt-get -y upgrade
-sudo apt-get -y install avconv mencoder
+sudo apt-get -y install libav-tools
 
 mkdir ~/timelapse
 
