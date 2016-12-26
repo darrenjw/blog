@@ -4,7 +4,8 @@
 while [ "true" != "false" ]
 do
   DATE=$(date +"%Y-%m-%d_%H:%M:%S")
-  raspistill -o now.jpg
+  raspistill -o now.jpg # default settings
+  # raspistill -ex night -ss 3500000 -o now.jpg # night settings
   avconv -i now.jpg -vf scale=640:-1 now-small.jpg
   mv now-small.jpg now.jpg
   cp now.jpg ~/timelapse/tl-$DATE.jpg # time-stamped photo
