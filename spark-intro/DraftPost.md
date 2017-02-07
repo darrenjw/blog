@@ -140,31 +140,44 @@ sc.textFile("/usr/share/dict/words").
 
 ### Descriptive statistics
 
-
+We first need some quantitative data, so let's simulate some. [Breeze](https://github.com/scalanlp/breeze/) is the standard Scala library for scientific and statistical computing. I've given a [quick introduction to Breeze](https://darrenjw.wordpress.com/2013/12/30/brief-introduction-to-scala-and-breeze-for-statistical-computing/) in a previous post. Spark has a dependence on Breeze, and therefore can be used from inside the Spark shell - this is very useful. So, we start by using Breeze to simulate a vector of normal random quantities:
 
 ```scala
-// Breeze inside Spark:
 import breeze.stats.distributions._
 val x = Gaussian(1.0,2.0).sample(10000)
+```
 
-// Numeric RDDs
+Note, though, that `x` is just a regular Breeze Vector, a simple serial collection all stored in RAM on the master thread. To use it as a Spark RDD, we must convert it to one, using the `parallelize` function:
+
+```scala
 val xRdd = sc.parallelize(x)
+```
+
+Now `xRdd` is an RDD, and so we can do Spark transformations and actions on it. There are some special methods for RDDs containing numeric values:
+
+```scala
 xRdd.mean
 xRdd.sampleVariance
+```
 
-// Descriptive stats
+Each summary statistic is computed with a single pass through the data, but if several summary statistics are required, it is inefficient to make a separate pass through the data for each summary, so the `stats` method makes a single pass through the data returning a `StatsCounter` object that can be used to compute various summary statistics.
+
+```scala
 val xStats = xRdd.stats
 xStats.mean
 xStats.sampleVariance
 xStats.sum
-// StatsCounter: count, mean, sum, max, min, variance, sampleVariance, stdev, sampleStdev
 ```
+
+The `StatsCounter` methods are: `count`, `mean`, `sum`, `max`, `min`, `variance`, `sampleVariance`, `stdev`, `sampleStdev`.
 
 ### Linear regression
 
+Moving beyond very simple descriptive statistics, we will look at a simple linear regression model, which will also allow us to introduce Spark `DataFrame`s - a high level abstraction layered on top of RDDs which makes working with tabular data much more convenient, especially in the context of statistical modelling.
+
+We start with some standard (non-Spark) Scala Breeze code to simulate some data from a simple linear regression model. We use the `x` already simulated as our first covariate. Then we simulate a second covariate, `x2`. Then, using some residual noise, `eps`, we simulate a regression model scenario, where we know that the "true" intercept is 1.5 and the "true" covariate regression coefficients are 2.0 and 1.0. 
+
 ```scala
-// Linear regression - simulate data
-import breeze.numerics._
 val x2 = Gaussian(0.0,1.0).sample(10000)
 val xx = x zip x2
 val lp = xx map {p => 2.0*p._1 + 1.0*p._2 + 1.5}
@@ -172,13 +185,18 @@ val eps = Gaussian(0.0,1.0).sample(10000)
 val y = (lp zip eps) map (p => p._1 + p._2)
 val yx = (y zip xx) map (p => (p._1,p._2._1,p._2._2))
 
-// convert to RDD
 val rddLR = sc.parallelize(yx)
+```
 
-// Convert RDD to DataFrame
+Note that the last line converts the regular Scala Breeze collection into a Spark RDD using `parallelize`. We could, in principle, do regression modelling using raw RDDs, and early versions of Spark required this. However, statisticians used to statistical languages such as R know that data frames are useful for working with tabular data. I gave a brief overview of [Scala data frame libraries](https://darrenjw.wordpress.com/2015/08/21/data-frames-and-tables-in-scala/) in a previous post. We can convert an RDD of tuples to a Spark `DataFrame` as follows:
+
+```scala
 val dfLR = rddLR.toDF("y","x1","x2")
 dfLR.show
 dfLR.show(5)
+```
+
+Note that `show` shows the first few rows of a `DataFrame`, and giving it a numeric arguments specifies the number to show. This is very useful for quick sanity-checking of `DataFrame` contents.
 
 // val df = spark.read.option("header","true").option("inferSchema","true").
 //   csv("/home/ndjw1/src/blog/scala-dataframes/r/cars93.csv")
