@@ -51,13 +51,13 @@ There are several different ways to use Spark. For this walk-through we are just
 bin/spark-shell --master local[4]
 ```
 
-The "4" refers to the number of worker threads to use. Four is probably fine for most decent laptops. `Ctrl-D` or `:quit` will exit the Spark shell and take you back to your OS shell. It is more convenient to have the Spark bin directory in your path. If you are using "bash" or a similar OS shell, you can temporarily add the Spark bin to your path with the OS shell command:
+The "4" refers to the number of worker threads to use. Four is probably fine for most decent laptops. `Ctrl-D` or `:quit` will exit the Spark shell and take you back to your OS shell. It is more convenient to have the Spark `bin` directory in your path. If you are using `bash` or a similar OS shell, you can temporarily add the Spark `bin` to your path with the OS shell command:
 
 ```bash
 export PATH=$PATH:`pwd`/bin
 ```
 
-You can make this permanent by adding this line to your `.profile` or similar start-up dot-file. I prefer not to do this, as I typically have several different Spark versions on my laptop and want to be able to select exactly the version I need. If you are not running "bash" on Unix, Google how to add a directory to your path. Check the path update has worked by starting up a shell with:
+You can make this permanent by adding a line like this (but with the full path hard-coded) to your `.profile` or similar start-up dot-file. I prefer not to do this, as I typically have several different Spark versions on my laptop and want to be able to select exactly the version I need. If you are not running `bash`, Google how to add a directory to your path. Check the path update has worked by starting up a shell with:
 
 ```bash
 spark-shell --master local[4]
@@ -193,7 +193,7 @@ dfLR.show
 dfLR.show(5)
 ```
 
-Note that `show` shows the first few rows of a `DataFrame`, and giving it a numeric arguments specifies the number to show. This is very useful for quick sanity-checking of `DataFrame` contents.
+Note that `show` shows the first few rows of a `DataFrame`, and giving it a numeric argument specifies the number to show. This is very useful for quick sanity-checking of `DataFrame` contents.
 
 Note that there are other ways of getting data into a Spark `DataFrame`. One of the simplest ways to get data into Spark from other systems is via a CSV file. A properly formatted CSV file with a header row can be read into Spark with a command like:
 
@@ -206,7 +206,7 @@ Note that there are other ways of getting data into a Spark `DataFrame`. One of 
 
 This requires two passes over the data - one to infer the schema and one to actually read the data. For very large datasets it is better to declare the schema and not use automatic schema inference. However, for very large datasets, CSV probably isn't a great choice of format anyway. Spark supports many more efficient data storage formats. Note that Spark also has functions for querying SQL (and other) databases, and reading query results directly into `DataFrame` objects. For people familiar with databases, this is often the most convenient way of ingesting data into Spark. See the Spark [DataFrames guide](http://spark.apache.org/docs/latest/sql-programming-guide.html) and the API docs for [DataFrameReader](http://spark.apache.org/docs/latest/api/scala/#org.apache.spark.sql.DataFrameReader) for further information.
 
-Spark has an extensive library of tools for the development of sophisticated machine learning pipelines. Included in this, are functions for fitting linear regression models, regularised regression models (Lasso, ridge, elastic net), generalised linear models, including logistic regression models, etc., and tools for optimising regularisation parameters, for example, using cross-validation. For this post I'm just going to show how to fit a simple OLS linear regression model: see the [ML pipeline documentation](http://spark.apache.org/docs/2.1.0/ml-pipeline.html) for further information, especially the docs on [classification and regression](http://spark.apache.org/docs/2.1.0/ml-classification-regression.html). 
+Spark has an extensive library of tools for the development of sophisticated machine learning pipelines. Included in this are functions for fitting linear regression models, regularised regression models (Lasso, ridge, elastic net), generalised linear models, including logistic regression models, etc., and tools for optimising regularisation parameters, for example, using cross-validation. For this post I'm just going to show how to fit a simple OLS linear regression model: see the [ML pipeline documentation](http://spark.apache.org/docs/2.1.0/ml-pipeline.html) for further information, especially the docs on [classification and regression](http://spark.apache.org/docs/2.1.0/ml-classification-regression.html). 
 
 We start by creating an object for fitting linear regression models:
 
@@ -224,7 +224,7 @@ lm.explainParams
 
 Note that there are many parameters associated with the fitting algorithm, including regularisation parameters. These are set to defaults corresponding to no regularisation (simple OLS). Note, however, that the algorithm defaults to standardising covariates to be mean zero variance one. We can turn that off before fitting the model if desired.
 
-Also note that the model fitting algorithm assumes that `DataFrame` to be fit has (at least) two columns, one called `label` containing the response variable, and one called `features`, where each element is actually a `Vectors` of covariates. So we first need to transform our `DataFrame` into the required format.
+Also note that the model fitting algorithm assumes that the `DataFrame` to be fit has (at least) two columns, one called `label` containing the response variable, and one called `features`, where each element is actually a `Vectors` of covariates. So we first need to transform our `DataFrame` into the required format.
 
 ```scala
 // Transform data frame to required format
@@ -260,9 +260,9 @@ So, that's how to fit a simple OLS linear regression model. Fitting GLMs (includ
 
 ## Further reading
 
-As previously mentioned, once you are up and running with a Spark shell, the official Spark documentation is reasonably good. First go through the [quick start guide](http://spark.apache.org/docs/latest/quick-start.html), then the [programming guide](http://spark.apache.org/docs/latest/programming-guide.html), then the [ML guide](http://spark.apache.org/docs/latest/ml-guide.html), and finally, consult the [API docs](http://spark.apache.org/docs/latest/api/scala/).
+As previously mentioned, once you are up and running with a Spark shell, the official Spark documentation is reasonably good. First go through the [quick start guide](http://spark.apache.org/docs/latest/quick-start.html), then the [programming guide](http://spark.apache.org/docs/latest/programming-guide.html), then the [ML guide](http://spark.apache.org/docs/latest/ml-guide.html), and finally, consult the [API docs](http://spark.apache.org/docs/latest/api/scala/). I discussed [books on scala for data science](https://darrenjw.wordpress.com/2016/12/22/books-on-scala-for-statistical-computing-and-data-science/) in the previous post - many of these cover Spark to a greater or lesser extent.
 
-I gave a talk recently on some of the general principles behind the use of functional programming for scalable statistical computing, and how concepts from category theory, such as monads, can help. The [PDF slides](http://www.mas.ncl.ac.uk/~ndjw1/docs/djw-ctfp.pdf) are available. I'm not sure how comprehensible they will be without my explanations and white-board diagrams, but come to think of it, I'm not sure how comprehensible they were *with* my explanations and white-board diagrams... Also note that I occasionally run a three-day short-course on [Scala for statistical computing](https://github.com/darrenjw/scala-course/blob/master/README.md), and much of the final day is concerned with using Apache Spark.
+I recently gave a talk on some of the general principles behind the use of functional programming for scalable statistical computing, and how concepts from category theory, such as monads, can help. The [PDF slides](http://www.mas.ncl.ac.uk/~ndjw1/docs/djw-ctfp.pdf) are available. I'm not sure how comprehensible they will be without my explanations and white-board diagrams, but come to think of it, I'm not sure how comprehensible they were *with* my explanations and white-board diagrams... Also note that I occasionally run a three-day short-course on [Scala for statistical computing](https://github.com/darrenjw/scala-course/blob/master/README.md), and much of the final day is concerned with using Apache Spark.
 
 
 ### (C) 2017 Darren J Wilkinson
