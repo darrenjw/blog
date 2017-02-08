@@ -2,6 +2,8 @@
 
 ## Draft Post - this is NOT the definitive version
 
+The final version of this post is now published at: https://darrenjw.wordpress.com/2017/02/08/a-quick-introduction-to-apache-spark-for-statisticians/
+
 ## Introduction
 
 [Apache Spark](http://spark.apache.org/) is a Scala library for analysing "big data". It can be used for analysing huge (internet-scale) datasets distributed across large clusters of machines. The analysis can be anything from the computation of simple descriptive statistics associated with the datasets, through to rather sophisticated machine learning pipelines involving data pre-processing, transformation, nonlinear model fitting and regularisation parameter tuning (via methods such as cross-validation). A relatively impartial overview can be found in the [Apache Spark Wikipedia page](https://en.wikipedia.org/wiki/Apache_Spark).
@@ -69,7 +71,7 @@ Note that if you want to run a script containing Spark commands to be run in "ba
 spark-shell --driver-memory 25g --master local[4] < spark-script.scala | tee script-out.txt
 ```
 
-There are much better ways to develop and submit batch jobs to Spark clusters, but I won't discuss those in this post. Note that while Spark is running, diagnostic information about the "cluster" can be obtained by pointing a web browser port 4040 on the master, which here is just http://localhost:4040/ - this is extremely useful for debugging purposes.
+There are much better ways to develop and submit batch jobs to Spark clusters, but I won't discuss those in this post. Note that while Spark is running, diagnostic information about the "cluster" can be obtained by pointing a web browser at port 4040 on the master, which here is just http://localhost:4040/ - this is extremely useful for debugging purposes.
 
 ## First Spark shell commands
 

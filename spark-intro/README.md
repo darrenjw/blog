@@ -1,9 +1,6 @@
 # A quick introduction to Apache Spark for statisticians
 
-This directory contains code for a blog post currently being drafted, to be posted at https://darrenjw.wordpress.com/ - a link will be provided here on posting.
-
-Note that in the meantime, you can read the [latest draft](DraftPost.md) of the post, here.
-
+This directory contains code for a draft blog post - the post is now published at: https://darrenjw.wordpress.com/2017/02/08/a-quick-introduction-to-apache-spark-for-statisticians/ 
 
 
 
