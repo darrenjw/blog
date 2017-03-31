@@ -6,7 +6,7 @@ mcmc-stream.scala
 
 import breeze.linalg._
 import breeze.plot._
-import breeze.stats.distributions.{Gaussian, Uniform}
+import breeze.stats.distributions._
 import breeze.stats.meanAndVariance
 import annotation.tailrec
 
@@ -85,7 +85,6 @@ object MCMC {
     if (n == 0)
       DenseVector(acc.reverse.toArray)
     else {
-      println(x)
       val can = x + Uniform(-eps, eps).draw
       val loglik = Gaussian(0.0, 1.0).logPdf(can)
       val loga = loglik - oldll
@@ -96,6 +95,57 @@ object MCMC {
     }
   }
 
+  def newState(x: Double, oldll: Double, eps: Double): (Double, Double) = {
+    val can = x + Uniform(-eps, eps).draw
+    val loglik = Gaussian(0.0, 1.0).logPdf(can)
+    val loga = loglik - oldll
+    if (math.log(Uniform(0.0, 1.0).draw) < loga) (can, loglik) else (x, oldll)
+  }
+
+  @tailrec
+  def metrop5(n: Int = 1000, eps: Double = 0.5, x: Double = 0.0, oldll: Double = Double.MinValue): Unit = {
+    if (n > 0) {
+      println(x)
+      val ns = newState(x, oldll, eps)
+      metrop5(n - 1, eps, ns._1, ns._2)
+    }
+  }
+
+  @tailrec
+  def metrop6(n: Int = 1000, eps: Double = 0.5, x: Double = 0.0, oldll: Double = Double.MinValue, acc: List[Double] = Nil): DenseVector[Double] = {
+    if (n == 0) DenseVector(acc.reverse.toArray) else {
+      val ns = newState(x, oldll, eps)
+      metrop6(n - 1, eps, ns._1, ns._2, ns._1 :: acc)
+    }
+  }
+
+  def nextState(eps: Double)(state: (Double, Double)): (Double, Double) = {
+    val x = state._1
+    val oldll = state._2
+    val can = x + Uniform(-eps, eps).draw
+    val loglik = Gaussian(0.0, 1.0).logPdf(can)
+    val loga = loglik - oldll
+    if (math.log(Uniform(0.0, 1.0).draw) < loga) (can, loglik) else (x, oldll)
+  }
+
+  def metrop7(eps: Double = 0.5, x: Double = 0.0, oldll: Double = Double.MinValue): Stream[Double] =
+    Stream.iterate((x, oldll))(nextState(eps)) map (_._1)
+
+  def thin[T](s: Stream[T], th: Int): Stream[T] = {
+    val ss = s.drop(th - 1)
+    if (ss.isEmpty) Stream.empty else
+      ss.head #:: thin(ss.tail, th)
+  }
+
+  val kernel: Double => Rand[Double] = x => for {
+    innov <- Uniform(-0.5, 0.5)
+    can = x + innov
+    oldll = Gaussian(0.0, 1.0).logPdf(x)
+    loglik = Gaussian(0.0, 1.0).logPdf(can)
+    loga = loglik - oldll
+    u <- Uniform(0.0, 1.0)
+  } yield if (math.log(u) < loga) can else x
+
   def main(arg: Array[String]): Unit = {
     println("Hi")
     metrop1(10).foreach(println)
@@ -104,6 +154,16 @@ object MCMC {
     metrop3(10)
     //mcmcSummary(metrop4(1000))
     metrop4(10).foreach(println)
+    metrop5(10)
+    metrop6(10).foreach(println)
+    //mcmcSummary(metrop6(100000))
+    metrop7().take(10).foreach(println)
+    //mcmcSummary(DenseVector(metrop7().take(100000).toArray))
+    //mcmcSummary(DenseVector(thin(metrop7().drop(1000),100).take(10000).toArray))
+    val metrop8 = MarkovChain(0.0)(kernel).steps.take(10).foreach(println)
+    //mcmcSummary(DenseVector(MarkovChain(0.0)(kernel).steps.take(100000).toArray))
+    MarkovChain.metropolisHastings(0.0, (x: Double) => Uniform(x - 0.5, x + 0.5))(x => Gaussian(0.0, 1.0).logPdf(x)).steps.take(10).toArray.foreach(println)
+    //mcmcSummary(DenseVector(MarkovChain.metropolisHastings(0.0,(x: Double)=>Uniform(x-0.5,x+0.5))(x=>Gaussian(0.0,1.0).logPdf(x)).steps.take(100000).toArray))
     println("Bye")
   }
 
