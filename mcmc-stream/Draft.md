@@ -4,7 +4,7 @@
 
 ### Introduction
 
-This weekend I've been preparing some material for my upcoming [Scala for statistical computing](https://github.com/darrenjw/scala-course/blob/master/README.md) short course. As part of the course, I thought it would be useful to walk through how to think about and structure MCMC codes, and in particular, how to think about MCMC algorithms as infinite streams of state. This material is reasonable stand-alone, so it seems suitable for a blog post. Complete runnable code for the examples in this post are available from my [blog repo](https://github.com/darrenjw/blog/tree/master/mcmc-stream).
+This weekend I've been preparing some material for my upcoming [Scala for statistical computing](https://github.com/darrenjw/scala-course/blob/master/README.md) short course. As part of the course, I thought it would be useful to walk through how to think about and structure MCMC codes, and in particular, how to think about MCMC algorithms as infinite streams of state. This material is reasonably stand-alone, so it seems suitable for a blog post. Complete runnable code for the examples in this post are available from my [blog repo](https://github.com/darrenjw/blog/tree/master/mcmc-stream).
 
 ### A simple MH sampler
 
@@ -200,6 +200,8 @@ Note that if you are using the MH functionality in Breeze, it is important to ma
 ### Summary
 
 Viewing MCMC algorithms as infinite streams of state is useful for writing elegant, generic, flexible code. Streams occur everywhere in programming, and so there are lots of libraries for working with them. In this post I used the simple `Stream` from the Scala standard library, but there are much more powerful and flexible stream libraries for Scala, including [fs2](https://github.com/functional-streams-for-scala/fs2) and [Akka-streams](http://doc.akka.io/docs/akka/2.4/scala/stream/index.html). But whatever libraries you are using, the fundamental concepts are the same. The most straightforward approach to implementation is to define impure stochastic streams to consume. However, a pure functional approach is also possible, and the Breeze library defines some useful functions to facilitate this approach. I'm still a little bit ambivalent about whether the pure approach is worth the additional cognitive overhead, but it's certainly very interesting and worth playing with and thinking about the pros and cons.
+
+Complete runnable code for the examples in this post are available from my [blog repo](https://github.com/darrenjw/blog/tree/master/mcmc-stream).
 
 
 ### eof
