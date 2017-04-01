@@ -170,7 +170,7 @@ object MCMC {
     MarkovChain(0.0)(kernel).steps.take(10).foreach(println)
     //mcmcSummary(DenseVector(MarkovChain(0.0)(kernel).steps.take(100000).toArray))
     MarkovChain.metropolisHastings(0.0, (x: Double) => Uniform(x - 0.5, x + 0.5))(x => Gaussian(0.0, 1.0).logPdf(x)).steps.take(10).toArray.foreach(println)
-    //mcmcSummary(DenseVector(MarkovChain.metropolisHastings(0.0,(x: Double)=>Uniform(x-0.5,x+0.5))(x=>Gaussian(0.0,1.0).logPdf(x)).steps.take(100000).toArray))
+    mcmcSummary(DenseVector(MarkovChain.metropolisHastings(0.0,(x: Double)=>Uniform(x-0.5,x+0.5))(x=>Gaussian(0.0,1.0).logPdf(x)).steps.take(100000).toArray))
 
     // timings...
     val N=1000000
