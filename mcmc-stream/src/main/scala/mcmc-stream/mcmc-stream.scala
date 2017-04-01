@@ -33,6 +33,13 @@ object MCMC {
     f
   }
 
+  def time[A](f: => A) = {
+    val s = System.nanoTime
+    val ret = f
+    println("time: " + (System.nanoTime - s) / 1e6 + "ms")
+    ret
+  }
+
   def metrop1(n: Int = 1000, eps: Double = 0.5): DenseVector[Double] = {
     val vec = DenseVector.fill(n)(0.0)
     var x = 0.0
@@ -137,7 +144,7 @@ object MCMC {
       ss.head #:: thin(ss.tail, th)
   }
 
-  val kernel: Double => Rand[Double] = x => for {
+  def kernel(x: Double): Rand[Double] = for {
     innov <- Uniform(-0.5, 0.5)
     can = x + innov
     oldll = Gaussian(0.0, 1.0).logPdf(x)
@@ -160,10 +167,19 @@ object MCMC {
     metrop7().take(10).foreach(println)
     //mcmcSummary(DenseVector(metrop7().take(100000).toArray))
     //mcmcSummary(DenseVector(thin(metrop7().drop(1000),100).take(10000).toArray))
-    val metrop8 = MarkovChain(0.0)(kernel).steps.take(10).foreach(println)
+    MarkovChain(0.0)(kernel).steps.take(10).foreach(println)
     //mcmcSummary(DenseVector(MarkovChain(0.0)(kernel).steps.take(100000).toArray))
     MarkovChain.metropolisHastings(0.0, (x: Double) => Uniform(x - 0.5, x + 0.5))(x => Gaussian(0.0, 1.0).logPdf(x)).steps.take(10).toArray.foreach(println)
     //mcmcSummary(DenseVector(MarkovChain.metropolisHastings(0.0,(x: Double)=>Uniform(x-0.5,x+0.5))(x=>Gaussian(0.0,1.0).logPdf(x)).steps.take(100000).toArray))
+
+    // timings...
+    val N=1000000
+    time(metrop1(N))
+    time(metrop4(N))
+    time(metrop6(N))
+    time(metrop7().take(N).toArray)
+    time(MarkovChain(0.0)(kernel).steps.take(N).toArray)
+    time(MarkovChain.metropolisHastings(0.0, (x: Double) => Uniform(x - 0.5, x + 0.5))(x => Gaussian(0.0, 1.0).logPdf(x)).steps.take(N).toArray)
     println("Bye")
   }
 
