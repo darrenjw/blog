@@ -2,7 +2,7 @@
 
 Code examples for the blog post: 
 
-*link here when it is published*
+https://darrenjw.wordpress.com/2017/04/01/mcmc-as-a-stream/
 
 Note that this repo contains everything that is needed to build and run the Scala code examples on any system that has Java installed. Any recent version of Java is fine. You do not need to "install" Scala or any Scala "packages" in order to run the code. If you have Java and a decent internet connection, you are good to go. This is one of the benefits of Scala - you can run it anywhere, on any system with a Java installation.
 
