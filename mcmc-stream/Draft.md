@@ -136,7 +136,7 @@ Both of these functions call `newState` to do the real work, and concentrate on 
 
 ### MCMC as a stream
 
-Ideally we would like to abstract out the details of how to do state iteration from the code as well. Most functional languages have some concept of a `Stream`, which represents a (potentially infinite) sequence of states. The `Stream` can embody the logic of how to perform state iteration, allowing use to abstract that away from our code, as well.
+Ideally we would like to abstract out the details of how to do state iteration from the code as well. Most functional languages have some concept of a `Stream`, which represents a (potentially infinite) sequence of states. The `Stream` can embody the logic of how to perform state iteration, allowing us to abstract that away from our code, as well.
 
 To do this, we will restructure our code slightly so that it more clearly maps old state to new state.
 ```scala
@@ -156,7 +156,7 @@ The "real" state of the chain is just `x`, but if we want to avoid recalculation
 ```
 The result of calling this is an infinite stream of states. Obviously it isn't computed - that would require infinite computation, but it captures the logic of iteration and computation in a `Stream`, that can be thought of as a lazy `List`. We can get values out by converting the `Stream` to a regular collection, being careful to truncate the `Stream` to one of finite length beforehand! eg. `metrop7().drop(1000).take(10000).toArray` will do a burn-in of 1,000 iterations followed by a main monitoring run of length 10,000, capturing the results in an `Array`. Note that `metrop7().drop(1000).take(10000)` is a `Stream`, and so nothing is actually computed until the `toArray` is encountered. Conversely, if printing to console is required, just replace the `.toArray` with `.foreach(println)`.
 
-The above stream-based approach to MCMC iteration is clean and elegant, and deals nicely with issues like burn-in and thinning (which can be handled similarly). This is how I typically write MCMC codes these days. However, functional programming purists would still have issues with this approach, as it isn't quite pure functional. The problem is that the code isn't pure - it has a side-effect, which is to mutate the state of the under-pinning pseudo-random number generator. If the code was pure, calling `nextState` with the same inputs would always result in the same result. Clearly this isn't the case here, as we have specifically designed the function to be stochastic, returning a randomly sampled value from the desired probability distribution. So `nextState` represents a function for randomly sampling from a conditional probability distribution.
+The above stream-based approach to MCMC iteration is clean and elegant, and deals nicely with issues like burn-in and thinning (which can be handled similarly). This is how I typically write MCMC codes these days. However, functional programming purists would still have issues with this approach, as it isn't quite pure functional. The problem is that the code isn't pure - it has a side-effect, which is to mutate the state of the under-pinning pseudo-random number generator. If the code was pure, calling `nextState` with the same inputs would always give the same result. Clearly this isn't the case here, as we have specifically designed the function to be stochastic, returning a randomly sampled value from the desired probability distribution. So `nextState` represents a function for randomly sampling from a conditional probability distribution.
 
 ### A pure functional approach
 
@@ -178,7 +178,7 @@ This is now pure - the same input `x` will always return the same probability di
 ```scala
 MarkovChain(0.0)(kernel).
   steps.
-  drop(1000)
+  drop(1000).
   take(10000).
   foreach(println)
 ```
@@ -199,7 +199,7 @@ Note that if you are using the MH functionality in Breeze, it is important to ma
 
 ### Summary
 
-Viewing MCMC algorithms as infinite streams of state is useful for writing elegant, generic, flexible code. Streams occur everywhere in programming, and so there are lots of libraries for working with them. In this post I used the simple `Stream` from the Scala standard library, but there are much more powerful and flexible stream libraries for Scala, including [fs2](https://github.com/functional-streams-for-scala/fs2) and [Akka-streams](http://doc.akka.io/docs/akka/2.4/scala/stream/index.html). But whatever libraries you are using, the fundamental concepts are the same. The most straightforward approach to implementation is to define impure stochastic streams to consume. However, a pure functional approach is also possible, and the Breeze library defines some useful functions to facilitate this approach. I'm still a little bit ambivalent about whether the pure approach is worth the additional cognitive overhead, but it's certainly very interesting and worth playing with.
+Viewing MCMC algorithms as infinite streams of state is useful for writing elegant, generic, flexible code. Streams occur everywhere in programming, and so there are lots of libraries for working with them. In this post I used the simple `Stream` from the Scala standard library, but there are much more powerful and flexible stream libraries for Scala, including [fs2](https://github.com/functional-streams-for-scala/fs2) and [Akka-streams](http://doc.akka.io/docs/akka/2.4/scala/stream/index.html). But whatever libraries you are using, the fundamental concepts are the same. The most straightforward approach to implementation is to define impure stochastic streams to consume. However, a pure functional approach is also possible, and the Breeze library defines some useful functions to facilitate this approach. I'm still a little bit ambivalent about whether the pure approach is worth the additional cognitive overhead, but it's certainly very interesting and worth playing with and thinking about the pros and cons.
 
 
 ### eof
