@@ -191,7 +191,7 @@ MarkovChain.
   Uniform(x - 0.5, x + 0.5))(x =>
   Gaussian(0.0, 1.0).logPdf(x)).
   steps.
-  drop(1000)
+  drop(1000).
   take(10000).
   toArray
 ```
