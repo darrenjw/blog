@@ -10,7 +10,7 @@ The library covers PCA, linear regression modelling and simple one-parameter GLM
 
 Plenty of [documentation](https://github.com/darrenjw/scala-glm/blob/master/README.md) is available from the [scala-glm github repo](https://github.com/darrenjw/scala-glm) which I won't repeat here. But to give a rough idea of how things work, I'll run through an interactive session for the linear regression example.
 
-First, download a [dataset](https://archive.ics.uci.edu/ml/datasets/airfoil+self-noise) from the [UCI ML Repository](http://archive.ics.uci.edu/ml/) to disk for subsequent analysis (caching the file on disk is good practice, as it avoids unnecessary load on the UCI server, and allows running the code off-line).
+First, download a [dataset](https://archive.ics.uci.edu/ml/datasets/airfoil+self-noise) from the [UCI ML Repository](http://archive.ics.uci.edu/ml/) to disk for subsequent analysis (caching the file on disk is good practice, as it avoids unnecessary load on the UCI server, and allows running the code off-line):
 
 ```scala
 import scalaglm._
