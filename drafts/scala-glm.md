@@ -4,7 +4,7 @@
 
 As discussed in the [previous post](https://darrenjw.wordpress.com/2017/05/31/statistical-computing-with-scala-free-on-line-course/), I've recently constructed and delivered a short course on statistical computing with Scala. Much of the course is concerned with writing statistical algorithms in Scala, typically making use of the scientific and numerical computing library, [Breeze](https://github.com/scalanlp/breeze). Breeze has all of the essential tools necessary for building statistical algorithms, but doesn't contain any higher level modelling functionality. As part of the course, I walked through how to build a small library for regression modelling on top of Breeze, including all of the usual regression diagnostics (such as standard errors, t-statistics, p-values, Q-Q plots, etc.). While preparing the course materials it occured to me that it would be useful to package and document this code properly for general use. In advance of the course I packaged the code up into a bare-bones library, but since then I've fleshed it out, tidied it up and documented it properly, so it's now ready for people to use.
 
-The library covers PCA, linear regression modelling and simple one-parameter GLMs (including logistic and Poisson regression). The underlying algorithms are fairly efficient and numerically stable (eg. linear regression uses the [QR decomposition](https://github.com/scalanlp/breeze) of the model matrix, and the GLM fitting uses QR within each [IRLS](https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares) step), though they are optimised more for clarity than speed. The library also includes a few utility functions and procedures, including a pairs plot (scatterplot matrix).
+The library covers PCA, linear regression modelling and simple one-parameter GLMs (including logistic and Poisson regression). The underlying algorithms are fairly efficient and numerically stable (eg. linear regression uses the [QR decomposition](https://en.wikipedia.org/wiki/QR_decomposition) of the model matrix, and the GLM fitting uses QR within each [IRLS](https://en.wikipedia.org/wiki/Iteratively_reweighted_least_squares) step), though they are optimised more for clarity than speed. The library also includes a few utility functions and procedures, including a pairs plot (scatterplot matrix).
 
 ## A linear regression example
 
@@ -75,6 +75,11 @@ val fig = mod.plots
 // fig: breeze.plot.Figure = breeze.plot.Figure@60d7ebb0
 ```
 
+There is a `.predict` method for generating point predictions (and standard errors) given a new model matrix, and fitting GLMs is very similar - these things are covered in the [quickstart guide](https://darrenjw.github.io/scala-glm/QuickStart.html) for the library.
+
+## Summary
+
+[scala-glm](https://github.com/darrenjw/scala-glm/) is a small Scala library built on top of the [Breeze](https://github.com/scalanlp/breeze) numerical library which enables simple and convenient regression modelling in Scala. It is reasonably well documented and usable in its current form, but I intend to gradually add additional features according to demand as time permits.
 
 #### eof
 
