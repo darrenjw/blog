@@ -2,9 +2,7 @@
 
 Code examples for the blog post: 
 
-Comonads for scientific and statistical computing in Scala
-
-(link when published) 
+[Comonads for scientific and statistical computing in Scala](https://darrenjw.wordpress.com/2018/01/22/comonads-for-scientific-and-statistical-computing-in-scala/)
 
 
 Note that this repo contains everything that is needed to build and run the Scala code examples on any system that has Java installed. Any recent version of Java is fine. You do not need to "install" Scala or any Scala "packages" in order to run the code. If you have Java and a decent internet connection, you are good to go. This is one of the benefits of Scala - you can run it anywhere, on any system with a Java installation.
