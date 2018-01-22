@@ -124,13 +124,12 @@ object ComonadExamples {
   }
 
   // convert to and from Breeze matrices
-  import breeze.linalg.{Vector => BDV, _}
+  import breeze.linalg.{Vector => BVec, _}
   def BDM2I[T](m: DenseMatrix[T]): Image[T] =
     Image(m.cols, m.rows, m.data.toVector.par)
     //Image(m.cols, m.rows, m.data.toVector)
-  def I2BDM(im: Image[Double]): DenseMatrix[Double] = {
+  def I2BDM(im: Image[Double]): DenseMatrix[Double] = 
     new DenseMatrix(im.h,im.w,im.data.toArray)
-  }
 
   // image examples
   def imageExamples: Unit = {
@@ -178,10 +177,10 @@ object ComonadExamples {
     // render
     import breeze.plot._
     val fig = Figure("Ising model Gibbs sampler")
-    fig.visible = false
+    //fig.visible = false
     fig.width = 1000
     fig.height = 800
-    pims.take(1000).zipWithIndex.foreach{case (pim,i) => {
+    pims.take(50).zipWithIndex.foreach{case (pim,i) => {
       print(s"$i ")
       fig.clear
       val p = fig.subplot(1,1,0)
@@ -196,8 +195,8 @@ object ComonadExamples {
 
 
   def main(args: Array[String]): Unit = {
-    //filterExamples
-    //imageExamples
+    filterExamples
+    imageExamples
     isingExamples
   }
 
