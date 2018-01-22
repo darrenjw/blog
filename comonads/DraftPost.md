@@ -1,6 +1,8 @@
 # Comonads for scientific and statistical computing in Scala
 
-*This is a work-in-progress draft - final post will be posted on my wordpress.com blog*
+*This is a draft - final post here:*
+
+https://darrenjw.wordpress.com/2018/01/22/comonads-for-scientific-and-statistical-computing-in-scala/
 
 ## Introduction
 
