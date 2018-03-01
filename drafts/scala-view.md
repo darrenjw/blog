@@ -2,7 +2,7 @@
 
 ## Introduction
 
-In the [previous post](https://darrenjw.wordpress.com/2018/01/22/comonads-for-scientific-and-statistical-computing-in-scala/) I discussed how comonads can be useful for structuring certain kinds of scientific and statistical computations. Two of the examples I gave were concerned with the time-evolution of 2-d images. In that post I used [Breeze](https://github.com/scalanlp/breeze) to animate the sequence of computed images. 
+In the [previous post](https://darrenjw.wordpress.com/2018/01/22/comonads-for-scientific-and-statistical-computing-in-scala/) I discussed how comonads can be useful for structuring certain kinds of scientific and statistical computations. Two of the examples I gave were concerned with the time-evolution of 2-d images. In that post I used [Breeze](https://github.com/scalanlp/breeze) to animate the sequence of computed images. In this post I want to describe an alternative that is better suited to animating an image sequence.
 
 [Scala-view](https://github.com/darrenjw/scala-view/) is a small Scala library for animating a Stream of Images on-screen in a separate window managed by your window manager. It works with both [ScalaFX](http://www.scalafx.org/) `Images` (recommended) and [Scala Swing](https://github.com/scala/scala-swing)/AWT `BufferedImages` (legacy). The stream of images is animated in a window with some simple controls to start and stop the animation, and to turn on and off the saving of image frames to disk (typically for the purpose of turning the image sequence into a movie). An example of what a window might look like is given below.
 
