@@ -2,7 +2,7 @@
 
 ## EvilPlot
 
-[EvilPlot](https://cibotech.github.io/evilplot/) is a new functional data visualisation library for Scala. Although there are several data viz options for Scala, this new library has a nice functional API for producing attractive, flexible, compositional plots which can be rendered in JVM applications and in web applications (via Scala.js). For a quick introduction, see this [blog post](https://medium.com/@CiboEng/evilplot-a-combinator-based-plotting-library-for-scala-4531f00208) from one of the library's creators. For further information, see the [official documentation](https://cibotech.github.io/evilplot/) and the [github repo](https://github.com/cibotech/evilplot). For a quick overview of the kinds of plots that the library is capable of generating, see the [plot cataglog](https://cibotech.github.io/evilplot/plot-catalog.html).
+[EvilPlot](https://cibotech.github.io/evilplot/) is a new functional data visualisation library for Scala. Although there are several data viz options for Scala, this new library has a nice functional API for producing attractive, flexible, compositional plots which can be rendered in JVM applications and in web applications (via Scala.js). For a quick introduction, see this [blog post](https://medium.com/@CiboEng/evilplot-a-combinator-based-plotting-library-for-scala-4531f00208) from one of the library's creators. For further information, see the [official documentation](https://cibotech.github.io/evilplot/) and the [github repo](https://github.com/cibotech/evilplot). For a quick overview of the kinds of plots that the library is capable of generating, see the [plot catalog](https://cibotech.github.io/evilplot/plot-catalog.html).
 
 The library is designed to produce plots which can be rendered into applications. However, when doing data analysis in the REPL on the JVM, it is often convenient to be able to just pop up a plot in a window on the desktop. EvilPlot doesn't seem to contain code for on-screen rendering, but the plots can be rendered to a bitmap image. In the [previous post](https://darrenjw.wordpress.com/2018/03/01/scala-view-animate-streams-of-images/) I described a small library, [scala-view](https://github.com/darrenjw/scala-view/), which renders such images, and image sequences on the desktop. In this post I'll walk through using scala-view to render EvilPlot plots on-screen.
 
@@ -49,7 +49,7 @@ This will produce a window on screen something like the following:
 
 PLOT HERE
 
-Don't close this plot yet, as this will confuse the REPL, just switch back to the REPL and continue.
+Don't close this plot yet, as this will confuse the REPL. Just switch back to the REPL and continue.
 
 ### Displaying a sequence of plots
 
