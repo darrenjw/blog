@@ -1,5 +1,19 @@
 # Monadic probabilistic programming in Scala with Rainier
 
+## Introduction
+
+[Rainier](https://github.com/stripe/rainier) is an interesting new probabilistic programming library for Scala recently open-sourced by [Stripe](https://stripe.com/). Probabilistic programming languages provide a computational framework for building and fitting Bayesian models to data. There are many interesting probabilistic programming languages, and there is currently a lot of interesting innovation happening with probabilistic programming languages embedded in strongly typed functional programming languages such as Scala and Haskell. However, most such languages tend to be developed by people lacking expertise in statistics and numerics, leading to elegant, composable languages which work well for toy problems, but don't scale well to the kinds of practical problems that applied statisticians are interested in. Conversely, there are a few well-known probabilistic programming languages developed by statisticians which have efficient inference engines, but are hampered by inflexible, inelegant languages and APIs. Rainier is interesting because it is an attempt to bridge the gap between these two worlds: it has an elegant functional, composable, extensible, monadic API, yet is backed by a very efficient, high-performance scalable inference engine, using [HMC](https://en.wikipedia.org/wiki/Hamiltonian_Monte_Carlo) and a static compute graph for reverse-mode [AD](https://en.wikipedia.org/wiki/Automatic_differentiation).
+
+
+https://darrenjw.wordpress.com/2017/04/01/mcmc-as-a-stream/
+
+https://darrenjw.wordpress.com/2018/05/11/using-evilplot-with-scala-view/
+
+
+## Interactive session
+
+
+
 ```scala
 set libraryDependencies += "com.stripe" %% "rainier-core" % "0.1.0"
 set libraryDependencies += "com.cibo" %% "evilplot" % "0.2.0"
