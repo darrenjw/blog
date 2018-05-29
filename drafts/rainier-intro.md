@@ -13,22 +13,9 @@ import com.stripe.rainier.compute._
 import com.stripe.rainier.core._
 import com.stripe.rainier.sampler._
 import com.stripe.rainier.repl._
+```
 
-case class Bernoulli(p: Real) extends Distribution[Int] {
-
-  def logDensity(b: Int): Real = {
-    p.log * b + (Real.one - p).log * (1 - b)
-  }
-
-  val generator = Generator.from { (r, n) =>
-    val pd = n.toDouble(p)
-    val u = r.standardUniform
-    if (u < pd) 1 else 0
-  }
-
-}
-
-// first simulate some data from a logistic regression model
+```scala
 val r = new scala.util.Random(0)
 val N = 1000
 val beta0 = 0.1
@@ -44,8 +31,25 @@ val p = theta map expit
 val y = p map (pi => if (r.nextDouble < pi) 1 else 0)
 println(y.take(10))
 println(x.take(10))
+```
 
-// now build and fit model
+```scala
+case class Bernoulli(p: Real) extends Distribution[Int] {
+
+  def logDensity(b: Int): Real = {
+    p.log * b + (Real.one - p).log * (1 - b)
+  }
+
+  val generator = Generator.from { (r, n) =>
+    val pd = n.toDouble(p)
+    val u = r.standardUniform
+    if (u < pd) 1 else 0
+  }
+
+}
+```
+
+```scala
 val model = for {
   beta0 <- Normal(0, 5).param
   beta1 <- Normal(0, 5).param
@@ -58,8 +62,9 @@ val model = for {
       }
     }.fit(x zip y)
 } yield (beta0, beta1)
+```
 
-//implicit val rng = RNG.default
+```scala
 implicit val rng = ScalaRNG(3)
 val its = 10000
 val thin = 5
@@ -95,7 +100,7 @@ val contour = ContourPlot(out.map(p => Point(p._1,p._2))).
   xLabel("b0").yLabel("b1")
 val plot = Facets(Seq(Seq(trace,hist),Seq(trace1,hist1),Seq(scatter,contour)))
 javax.imageio.ImageIO.write(plot.render().asBufferedImage, "png",
-  new java.io.File("traceplot.png"))
+  new java.io.File("diagnostics.png"))
 ```
 
 
