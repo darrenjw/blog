@@ -68,9 +68,7 @@ val model = for {
 implicit val rng = ScalaRNG(3)
 val its = 10000
 val thin = 5
-//val out = model.sample(Walkers(100), 10000, its)
 val out = model.sample(HMC(5), 10000, its*thin, thin)
-//val out = model.toStream(HMC(5), 1000).take(its).map(_()).toArray
 println(out.take(10))
 ```
 
