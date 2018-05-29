@@ -129,7 +129,7 @@ javax.imageio.ImageIO.write(plot.render().asBufferedImage, "png",
   new java.io.File("diagnostics.png"))
 ```
 
-
+![Diagnostic plots](diagnostics.png)
 
 #### eof
 
