@@ -20,15 +20,6 @@ console
 
 I've included a dependency on [EvilPlot](https://cibotech.github.io/evilplot/), (discussed in the [previous post](https://darrenjw.wordpress.com/2018/05/11/using-evilplot-with-scala-view/)), so we can plot some MCMC diagnostics later.
 
-At the Scala REPL, start with a bunch of Rainier imports:
-
-```scala
-import com.stripe.rainier.compute._
-import com.stripe.rainier.core._
-import com.stripe.rainier.sampler._
-import com.stripe.rainier.repl._
-```
-
 Before we start building models, we need some data. For this post we will focus on a simple logistic regression model, and so we will begin by simulating some synthetic data consistent with such a model.
 
 ```scala
@@ -49,6 +40,17 @@ val y = p map (pi => if (r.nextDouble < pi) 1 else 0)
 
 Now we have some synthetic data, we can fit the model and see if we are able to recover the "true" parameters used to generate the synthetic data. In Rainier, we build models by declaring probabilistic programs for the model and the data, and then run an inference engine to generate samples from the posterior distribution.
 
+Start with a bunch of Rainier imports:
+
+```scala
+import com.stripe.rainier.compute._
+import com.stripe.rainier.core._
+import com.stripe.rainier.sampler._
+import com.stripe.rainier.repl._
+```
+
+Now we want to build a model. We do so by describing the joint distribution of parameters and data. Rainier has a few built-in distributions, and these can be combined using standard functional monadic combinators such as `map`, `zip`, `flatMap`, etc., to create a probabilistic program representing a probability monad for the model. Also, if Rainier doesn't contain the distribution that you want, it's easy enough to add it yourself by extending the `Distribution` trait. For example, while Rainier does contain a `Binomial` distribution, there's a bug in the likelihood for the initial 0.1.0 release (fixed for 0.1.1), and it doesn't have a `Bernoulli` distribution built-in. We need one of these for the observation likelihood of our logistic regression model, so let's just declare our own `Bernoulli` distribution by providing its log-density and a generation mechanism.
+
 ```scala
 case class Bernoulli(p: Real) extends Distribution[Int] {
 
@@ -65,12 +67,7 @@ case class Bernoulli(p: Real) extends Distribution[Int] {
 }
 ```
 
-
-
-
-https://darrenjw.wordpress.com/2017/04/01/mcmc-as-a-stream/
-
-
+Now that we have our own `Bernoulli` distribution, we can use it as part of the probabilistic program describing our model. Due to the monadic nature of such probabilistic programs, it is often most natural to declare them using a `for`-expression.
 
 ```scala
 val model = for {
@@ -87,6 +84,10 @@ val model = for {
 } yield (beta0, beta1)
 ```
 
+This kind of construction is very natural for anyone familiar with monadic programming in Scala, but will no doubt be a little mysterious otherwise. `RandomVariable` is the probability monad used for HMC sampling, and these can be constructed from `Distributions` using `.param` (for unobserved parameters) and `.fit` (for observed variables). `Predictor` is just a convenience for observations corresponding to covariate information. `model` is therefore a `RandomVariable` over `beta0` and `beta1`, the two unobserved parameters of interest. Note that I briefly discussed this kind of pure functional approach to describing probabilistic programs (using `Rand` from [Breeze](https://github.com/scalanlp/breeze)) in my post on [MCMC as a stream](https://darrenjw.wordpress.com/2017/04/01/mcmc-as-a-stream/).
+
+Now we have our probabilistic program, we can sample from it using HMC as follows.
+
 ```scala
 implicit val rng = ScalaRNG(3)
 val its = 10000
@@ -95,10 +96,9 @@ val out = model.sample(HMC(5), 10000, its*thin, thin)
 println(out.take(10))
 ```
 
+The argument to `HMC()` is the number of leapfrog steps to take per iteration.
 
-
-
-
+Finally, we can use EvilPlot to look at the HMC output and check that we have managed to reasonably recover the true parameters associated with our synthetic data.
 
 ```scala
 import com.cibo.evilplot.plot._
@@ -130,6 +130,16 @@ javax.imageio.ImageIO.write(plot.render().asBufferedImage, "png",
 ```
 
 ![Diagnostic plots](diagnostics.png)
+
+Everything looks good, and the sampling is very fast!
+
+## Further reading
+
+For further information, see the [Rainier repo](https://github.com/stripe/rainier). In particular, start with the [tour of Rainier's core](https://github.com/stripe/rainier/blob/master/docs/tour.md), which gives a more detailed introduction to how Rainier works than this post. Those interested in how the efficient AD works may want to read about the [compute graph](https://github.com/stripe/rainier/blob/master/docs/real.md), and the [implementation notes](https://github.com/stripe/rainier/blob/master/docs/impl.md) explain how it all fits together. There are also some [examples](https://github.com/stripe/rainier/tree/master/rainier-example/src/main/scala/com/stripe/rainier/example), and there's a [gitter channel](https://gitter.im/com_stripe_rainier/Lobby) for asking questions. This is a very new project, so there are a few minor bugs and wrinkles in this initial release, but development is progressing rapidly, so I fully expect the library to get properly battle-hardened over the next few months.
+
+For those unfamiliar with a monadic approach to probabilistic programming, then [Ścibior et al (2015)](http://mlg.eng.cam.ac.uk/pub/pdf/SciGhaGor15.pdf) is probably a good starting point.
+
+
 
 #### eof
 
