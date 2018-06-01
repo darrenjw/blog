@@ -2,23 +2,18 @@
 
 ## Introduction
 
-[Rainier](https://github.com/stripe/rainier) is an interesting new probabilistic programming library for Scala recently open-sourced by [Stripe](https://stripe.com/). Probabilistic programming languages provide a computational framework for building and fitting Bayesian models to data. There are many interesting probabilistic programming languages, and there is currently a lot of interesting innovation happening with probabilistic programming languages embedded in strongly typed functional programming languages such as Scala and Haskell. However, most such languages tend to be developed by people lacking expertise in statistics and numerics, leading to elegant, composable languages which work well for toy problems, but don't scale well to the kinds of practical problems that applied statisticians are interested in. Conversely, there are a few well-known probabilistic programming languages developed by and for statisticians which have efficient inference engines, but are hampered by inflexible, inelegant languages and APIs. Rainier is interesting because it is an attempt to bridge the gap between these two worlds: it has a functional, composable, extensible, monadic API, yet is backed by a very efficient, high-performance scalable inference engine, using [HMC](https://en.wikipedia.org/wiki/Hamiltonian_Monte_Carlo) and a static compute graph for reverse-mode [AD](https://en.wikipedia.org/wiki/Automatic_differentiation). Clearly there will be some loss of generality associated with choosing an efficient inference algorithm (eg. for HMC, there must be a fixed number of parameters and they must all be continuous), but it still covers a large proportion of the class of hierarchical models commonly used in applied statistical modelling.
+[Rainier](https://github.com/stripe/rainier) is an interesting new probabilistic programming library for Scala recently open-sourced by [Stripe](https://stripe.com/). Probabilistic programming languages provide a computational framework for building and fitting Bayesian models to data. There are many interesting probabilistic programming languages, and there is currently a lot of interesting innovation happening with probabilistic programming languages embedded in strongly typed functional programming languages such as Scala and Haskell. However, most such languages tend to be developed by people lacking expertise in statistics and numerics, leading to elegant, composable languages which work well for toy problems, but don't scale well to the kinds of practical problems that applied statisticians are interested in. Conversely, there are a few well-known probabilistic programming languages developed by and for statisticians which have efficient inference engines, but are hampered by inflexible, inelegant languages and APIs. Rainier is interesting because it is an attempt to bridge the gap between these two worlds: it has a functional, composable, extensible, monadic API, yet is backed by a very efficient, high-performance scalable inference engine, using [HMC](https://en.wikipedia.org/wiki/Hamiltonian_Monte_Carlo) and a static compute graph for reverse-mode [AD](https://en.wikipedia.org/wiki/Automatic_differentiation). Clearly there will be some loss of generality associated with choosing an efficient inference algorithm (eg. for HMC, there needs to be a fixed number of parameters and they must all be continuous), but it still covers a large proportion of the class of hierarchical models commonly used in applied statistical modelling.
 
-In this post I'll give a quick introduction to Rainier using an interactive session requiring only that [SBT](https://www.scala-sbt.org/) is installed.
+In this post I'll give a quick introduction to Rainier using an interactive session requiring only that [SBT](https://www.scala-sbt.org/) is installed and the [Rainier repo](https://github.com/stripe/rainier) is downloaded or cloned.
 
 ## Interactive session
 
-To follow along with this post, just run SBT from an empty directory and paste commands. First set some dependencies and start a Scala REPL.
+To follow along with this post, just run clone or download and unpack the Rainier repo, and run SBT from the top-level Rainier directory and paste commands. First start a Scala REPL.
 
 ```scala
-set libraryDependencies += "com.stripe" %% "rainier-core" % "0.1.0"
-set libraryDependencies += "com.cibo" %% "evilplot" % "0.2.0"
-set resolvers += Resolver.bintrayRepo("cibotech", "public")
-set scalaVersion := "2.12.4"
+project rainierCore
 console
 ```
-
-I've included a dependency on [EvilPlot](https://cibotech.github.io/evilplot/), (discussed in the [previous post](https://darrenjw.wordpress.com/2018/05/11/using-evilplot-with-scala-view/)), so we can plot some MCMC diagnostics later.
 
 Before we start building models, we need some data. For this post we will focus on a simple logistic regression model, and so we will begin by simulating some synthetic data consistent with such a model.
 
@@ -49,25 +44,7 @@ import com.stripe.rainier.sampler._
 import com.stripe.rainier.repl._
 ```
 
-Now we want to build a model. We do so by describing the joint distribution of parameters and data. Rainier has a few built-in distributions, and these can be combined using standard functional monadic combinators such as `map`, `zip`, `flatMap`, etc., to create a probabilistic program representing a probability monad for the model. Also, if Rainier doesn't contain the distribution that you want, it's easy enough to add it yourself by extending the `Distribution` trait. For example, while Rainier does contain a `Binomial` distribution, there's a bug in the likelihood for the initial 0.1.0 release (fixed for 0.1.1), and it doesn't have a `Bernoulli` distribution built-in. We need one of these for the observation likelihood of our logistic regression model, so let's just declare our own `Bernoulli` distribution by providing its log-density and a generation mechanism.
-
-```scala
-case class Bernoulli(p: Real) extends Distribution[Int] {
-
-  def logDensity(b: Int): Real = {
-    p.log * b + (Real.one - p).log * (1 - b)
-  }
-
-  val generator = Generator.from { (r, n) =>
-    val pd = n.toDouble(p)
-    val u = r.standardUniform
-    if (u < pd) 1 else 0
-  }
-
-}
-```
-
-Now that we have our own `Bernoulli` distribution, we can use it as part of the probabilistic program describing our model. Due to the monadic nature of such probabilistic programs, it is often most natural to declare them using a `for`-expression.
+Now we want to build a model. We do so by describing the joint distribution of parameters and data. Rainier has a few built-in distributions, and these can be combined using standard functional monadic combinators such as `map`, `zip`, `flatMap`, etc., to create a probabilistic program representing a probability monad for the model. Due to the monadic nature of such probabilistic programs, it is often most natural to declare them using a `for`-expression.
 
 ```scala
 val model = for {
@@ -81,10 +58,10 @@ val model = for {
         Bernoulli(p)
       }
     }.fit(x zip y)
-} yield (beta0, beta1)
+} yield Map("b0"->beta0, "b1"->beta1)
 ```
 
-This kind of construction is very natural for anyone familiar with monadic programming in Scala, but will no doubt be a little mysterious otherwise. `RandomVariable` is the probability monad used for HMC sampling, and these can be constructed from `Distributions` using `.param` (for unobserved parameters) and `.fit` (for observed variables). `Predictor` is just a convenience for observations corresponding to covariate information. `model` is therefore a `RandomVariable` over `beta0` and `beta1`, the two unobserved parameters of interest. Note that I briefly discussed this kind of pure functional approach to describing probabilistic programs (using `Rand` from [Breeze](https://github.com/scalanlp/breeze)) in my post on [MCMC as a stream](https://darrenjw.wordpress.com/2017/04/01/mcmc-as-a-stream/).
+This kind of construction is very natural for anyone familiar with monadic programming in Scala, but will no doubt be a little mysterious otherwise. `RandomVariable` is the probability monad used for HMC sampling, and these can be constructed from `Distributions` using `.param` (for unobserved parameters) and `.fit` (for variables with associated observations). `Predictor` is just a convenience for observations corresponding to covariate information. `model` is therefore a `RandomVariable` over `beta0` and `beta1`, the two unobserved parameters of interest. Note that I briefly discussed this kind of pure functional approach to describing probabilistic programs (using `Rand` from [Breeze](https://github.com/scalanlp/breeze)) in my post on [MCMC as a stream](https://darrenjw.wordpress.com/2017/04/01/mcmc-as-a-stream/).
 
 Now we have our probabilistic program, we can sample from it using HMC as follows.
 
@@ -101,41 +78,22 @@ The argument to `HMC()` is the number of leapfrog steps to take per iteration.
 Finally, we can use EvilPlot to look at the HMC output and check that we have managed to reasonably recover the true parameters associated with our synthetic data.
 
 ```scala
-import com.cibo.evilplot.plot._
-import com.cibo.evilplot.colors._
-import com.cibo.evilplot.plot.aesthetics.DefaultTheme._
-import com.cibo.evilplot.numeric.Point
+import com.cibo.evilplot.geometry.Extent
+import com.stripe.rainier.plot.EvilTracePlot._
 
-val data = out.map(_._1).zipWithIndex.map(p => Point(p._2,p._1))
-val trace = LinePlot.series(data, "Line graph", HSL(210, 100, 56)).
-  xAxis().yAxis().frame().hline(beta0).
-  xLabel("Iteration").yLabel("b0").title("Trace plot")
-val hist = Histogram(out.map(_._1),30).xAxis().yAxis().frame().
-  xLabel("b0").yLabel("Frequency").vline(beta0)
-val data1 = out.map(_._2).zipWithIndex.map(p => Point(p._2,p._1))
-val trace1 = LinePlot.series(data1, "Line graph", HSL(210, 100, 56)).
-  xAxis().yAxis().frame().hline(beta1).
-  xLabel("Iteration").yLabel("b1").title("Trace plot")
-val hist1 = Histogram(out.map(_._2),30).xAxis().yAxis().frame().
-  xLabel("b1").yLabel("Frequency").vline(beta1)
-val scatter = ScatterPlot(out.map(p => Point(p._1,p._2))).
-  xAxis().yAxis().frame().vline(beta0).hline(beta1).
-  xLabel("b0").yLabel("b1")
-val contour = ContourPlot(out.map(p => Point(p._1,p._2))).
-  xAxis().yAxis().frame().vline(beta0).hline(beta1).
-  xLabel("b0").yLabel("b1")
-val plot = Facets(Seq(Seq(trace,hist),Seq(trace1,hist1),Seq(scatter,contour)))
-javax.imageio.ImageIO.write(plot.render().asBufferedImage, "png",
-  new java.io.File("diagnostics.png"))
+render(traces(out, truth = Map("b0" -> beta0, "b1" -> beta1)),
+  "traceplots.png", Extent(1200, 1000))
+render(pairs(out, truth = Map("b0" -> beta0, "b1" -> beta1)), "pairs.png")
 ```
 
-![Diagnostic plots](diagnostics.png)
+![Diagnostic plots](traceplots.png)
+![Diagnostic plots](pairs.png)
 
 Everything looks good, and the sampling is very fast!
 
 ## Further reading
 
-For further information, see the [Rainier repo](https://github.com/stripe/rainier). In particular, start with the [tour of Rainier's core](https://github.com/stripe/rainier/blob/master/docs/tour.md), which gives a more detailed introduction to how Rainier works than this post. Those interested in how the efficient AD works may want to read about the [compute graph](https://github.com/stripe/rainier/blob/master/docs/real.md), and the [implementation notes](https://github.com/stripe/rainier/blob/master/docs/impl.md) explain how it all fits together. There is some basic ScalaDoc for the core package, and also some [examples](https://github.com/stripe/rainier/tree/master/rainier-example/src/main/scala/com/stripe/rainier/example), and there's a [gitter channel](https://gitter.im/com_stripe_rainier/Lobby) for asking questions. This is a very new project, so there are a few minor bugs and wrinkles in this initial release, but development is progressing rapidly, so I fully expect the library to get properly battle-hardened over the next few months.
+For further information, see the [Rainier repo](https://github.com/stripe/rainier). In particular, start with the [tour of Rainier's core](https://github.com/stripe/rainier/blob/master/docs/tour.md), which gives a more detailed introduction to how Rainier works than this post. Those interested in how the efficient AD works may want to read about the [compute graph](https://github.com/stripe/rainier/blob/master/docs/real.md), and the [implementation notes](https://github.com/stripe/rainier/blob/master/docs/impl.md) explain how it all fits together. There is some basic ScalaDoc for the core package, and also some [examples](https://github.com/stripe/rainier/tree/master/rainier-example/src/main/scala/com/stripe/rainier/example) (including this one), and there's a [gitter channel](https://gitter.im/com_stripe_rainier/Lobby) for asking questions. This is a very new project, so there are a few minor bugs and wrinkles in this initial release, but development is progressing rapidly, so I fully expect the library to get properly battle-hardened over the next few months.
 
 For those unfamiliar with the monadic approach to probabilistic programming, then [Ścibior et al (2015)](http://mlg.eng.cam.ac.uk/pub/pdf/SciGhaGor15.pdf) is probably a good starting point.
 
