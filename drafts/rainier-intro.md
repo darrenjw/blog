@@ -8,7 +8,7 @@ In this post I'll give a quick introduction to Rainier using an interactive sess
 
 ## Interactive session
 
-To follow along with this post, just run clone or download and unpack the Rainier repo, and run SBT from the top-level Rainier directory and paste commands. First start a Scala REPL.
+To follow along with this post just clone, or download and unpack, the Rainier repo, and run SBT from the top-level Rainier directory and paste commands. First start a Scala REPL.
 
 ```scala
 project rainierCore
@@ -30,7 +30,7 @@ val theta = x map { xi =>
 }
 def expit(x: Double): Double = 1.0 / (1.0 + math.exp(-x))
 val p = theta map expit
-val y = p map (pi => if (r.nextDouble < pi) 1 else 0)
+val y = p map (pi => (r.nextDouble < pi))
 ```
 
 Now we have some synthetic data, we can fit the model and see if we are able to recover the "true" parameters used to generate the synthetic data. In Rainier, we build models by declaring probabilistic programs for the model and the data, and then run an inference engine to generate samples from the posterior distribution.
@@ -54,8 +54,7 @@ val model = for {
       {
         val theta = beta0 + beta1 * x
         val p = Real(1.0) / (Real(1.0) + (Real(0.0) - theta).exp)
-        //Binomial(p,1)
-        Bernoulli(p)
+        Categorical.boolean(p)
       }
     }.fit(x zip y)
 } yield Map("b0"->beta0, "b1"->beta1)
