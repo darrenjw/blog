@@ -11,7 +11,7 @@ In this post I'll give a quick introduction to Rainier using an interactive sess
 To follow along with this post just clone, or download and unpack, the Rainier repo, and run SBT from the top-level Rainier directory and paste commands. First start a Scala REPL.
 
 ```scala
-project rainierCore
+project rainierPlot
 console
 ```
 
