@@ -27,10 +27,10 @@ val mu = 3.0 // AR(1) mean
 val a = 0.95 // auto-regressive parameter
 val sig = 1.0 // AR(1) SD
 val sigD = 3.0 // observational SD
-val state = Stream
-  .iterate(0.0)(x => mu + (x - mu) * a + sig * rng.standardNormal)
-  .take(n)
-  .toVector
+val state = Stream.
+  iterate(0.0)(x => mu + (x - mu) * a + sig * rng.standardNormal).
+  take(n).
+  toVector
 val obs = state.map(_ + sigD * rng.standardNormal)
 ```
 
@@ -51,7 +51,7 @@ Note the use of a case class for wrapping the static parameters. Next, let's def
 
 ```scala
 def addTimePoint(current: RandomVariable[(Static, List[Real])],
-                     datum: Double): = for {
+                     datum: Double) = for {
   tup <- current
   static = tup._1
   states = tup._2
