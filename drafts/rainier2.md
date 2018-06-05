@@ -68,7 +68,7 @@ Given this, we can generate the probabilistic program for our model as a *fold* 
 val fullModel = obs.foldLeft(prior)(addTimePoint(_, _))
 ```
 
-If we don't want to keep samples for all of the states, we can focus on the parameters of interest, wrapping the results in a `Map` for convenient sampling and plotting.
+If we don't want to keep samples for all of the variables, we can focus on the parameters of interest, wrapping the results in a `Map` for convenient sampling and plotting.
 
 ```scala
 val model = for {
