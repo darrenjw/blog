@@ -112,7 +112,7 @@ This generates the following diagnostic plots:
 
 ## Summary
 
-Rainier is a monadic DSL for probabilistic programming in Scala. We can use standard functional combinators and for-expressions for building models to sample, and then run an efficient HMC algorithm on the resulting probability monad in order to obtain samples from the posterior distribution of the model.
+Rainier is a monadic DSL for probabilistic programming in Scala. We can use standard functional combinators and for-expressions for building models to sample, and then run an efficient HMC algorithm on the resulting probability monad in order to obtain samples from the posterior distribution of the model. See the [Rainier](https://github.com/stripe/rainier) repo for further details.
 
 
 #### eof
