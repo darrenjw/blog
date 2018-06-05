@@ -22,10 +22,10 @@ import com.stripe.rainier.core._
 import com.stripe.rainier.sampler._
 
 implicit val rng = ScalaRNG(1)
-val n = 75 // number of observations/time points
+val n = 60 // number of observations/time points
 val mu = 3.0 // AR(1) mean
 val a = 0.95 // auto-regressive parameter
-val sig = 1.0 // AR(1) SD
+val sig = 0.2 // AR(1) SD
 val sigD = 3.0 // observational SD
 val state = Stream.
   iterate(0.0)(x => mu + (x - mu) * a + sig * rng.standardNormal).
