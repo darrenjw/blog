@@ -86,7 +86,7 @@ val model = for {
 We can sample with
 
 ```scala
-val out = model.sample(HMC(3), 100000, 10000 * 500, 500)
+val out = model.sample(HMC(4), 100000, 10000 * 500, 500)
 ```
 
 (this will take a few minutes) and plot some diagnostics with
