@@ -10,6 +10,7 @@ First run SBT from an empty directory, and paste the following at the SBT prompt
 
 ```scala
 set libraryDependencies  += "com.stripe" %% "rainier-plot" % "0.1.1"
+set scalaVersion := "2.12.4"
 console
 ```
 
