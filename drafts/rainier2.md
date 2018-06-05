@@ -89,26 +89,26 @@ We can sample with
 val out = model.sample(HMC(4), 100000, 10000 * 500, 500)
 ```
 
-(this will take a few minutes) and plot some diagnostics with
+(this will take several minutes) and plot some diagnostics with
 
 ```scala
-    import com.cibo.evilplot.geometry.Extent
-    import com.stripe.rainier.plot.EvilTracePlot._
+import com.cibo.evilplot.geometry.Extent
+import com.stripe.rainier.plot.EvilTracePlot._
 
-    render(traces(out, truth = Map("mu" -> mu,
-      "a" -> a, "sigD" -> sigD, "sig" -> sig,
-      "SP" -> state(0))), "traceplots.png",
-           Extent(1200, 1400))
-    render(pairs(out, truth = Map("mu" -> mu,
-       "a" -> a, "sigD" -> sigD, "sig" -> sig,
-       "SP" -> state(0))), "pairs.png")
+render(traces(out, truth = Map("mu" -> mu,
+  "a" -> a, "sigD" -> sigD, "sig" -> sig,
+  "SP" -> state(0))), "traceplots.png",
+        Extent(1200, 1400))
+render(pairs(out, truth = Map("mu" -> mu,
+  "a" -> a, "sigD" -> sigD, "sig" -> sig,
+  "SP" -> state(0))), "pairs.png")
 ```
 
 This generates the following diagnostic plots:
 
-![Trace plots]()
+![Trace plots](r2tp.png)
 
-![Pairs plots]()
+![Pairs plots](r2pp.png)
 
 ## Summary
 
