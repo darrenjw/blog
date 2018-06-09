@@ -29,8 +29,7 @@ val sig = 0.2 // AR(1) SD
 val sigD = 3.0 // observational SD
 val state = Stream.
   iterate(0.0)(x => mu + (x - mu) * a + sig * rng.standardNormal).
-  take(n).
-  toVector
+  take(n).toVector
 val obs = state.map(_ + sigD * rng.standardNormal)
 ```
 
@@ -86,7 +85,7 @@ val model = for {
 We can sample with
 
 ```scala
-val out = model.sample(HMC(4), 100000, 10000 * 500, 500)
+val out = model.sample(HMC(3), 100000, 10000 * 500, 500)
 ```
 
 (this will take several minutes) and plot some diagnostics with
@@ -95,13 +94,11 @@ val out = model.sample(HMC(4), 100000, 10000 * 500, 500)
 import com.cibo.evilplot.geometry.Extent
 import com.stripe.rainier.plot.EvilTracePlot._
 
-render(traces(out, truth = Map("mu" -> mu,
-  "a" -> a, "sigD" -> sigD, "sig" -> sig,
-  "SP" -> state(0))), "traceplots.png",
-        Extent(1200, 1400))
-render(pairs(out, truth = Map("mu" -> mu,
-  "a" -> a, "sigD" -> sigD, "sig" -> sig,
-  "SP" -> state(0))), "pairs.png")
+val truth = Map("mu" -> mu, "a" -> a, "sigD" -> sigD,
+  "sig" -> sig, "SP" -> state(0))
+render(traces(out, truth), "traceplots.png",
+  Extent(1200, 1400))
+render(pairs(out, truth), "pairs.png")
 ```
 
 This generates the following diagnostic plots:
