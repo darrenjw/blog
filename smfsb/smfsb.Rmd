@@ -1,0 +1,22 @@
+# R Markdown test...
+
+Some text
+
+Some code:
+
+```{r}
+x=rnorm(5)
+y=x*x
+y
+```
+
+Some more text
+
+```{r}
+plot(x,y)
+```
+
+blah
+
+#### eof
+
