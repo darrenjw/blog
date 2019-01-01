@@ -1,4 +1,35 @@
-# R Markdown test...
+# The `smfsb` R package
+
+## Introduction
+
+In the [previous post](https://darrenjw.wordpress.com/2018/12/19/stochastic-modelling-for-systems-biology-third-edition/) I gave a brief introduction to the third edition of my textbook, [Stochastic modelling for systems biology](https://github.com/darrenjw/smfsb). The algorithms described in the book are illustrated by implementations in R. These implementations are collected together in an R package on [CRAN](https://cran.r-project.org/) called `smfsb`. This post will provide a brief introduction to the package and its capabilities.
+
+## Installation
+
+Since the package is on CRAN, the simplest way to install it is to enter
+```{r eval=FALSE}
+install.packages("smfsb")
+```
+at the R command prompt. This will install the latest version that is on CRAN. Once installed, the package can be loaded with
+```{r message=FALSE}
+library(smfsb)
+```
+The package is well-documented, so further information can be obtained with the usual R mechanisms, such as
+```{r eval=FALSE}
+vignette(package="smfsb")
+vignette("smfsb")
+help(package="smfsb")
+?StepGillespie
+example(StepCLE1D)
+```
+
+
+## A brief tutorial
+
+The vignette gives a quick introduction the the library, which I don't need to repeat verbatim here. If you are new to the package, I recommend working through that before continuing. Here I'll concentrate on some of the new features associated with the third edition.
+
+
+
 
 Some text
 
@@ -17,6 +48,11 @@ plot(x,y)
 ```
 
 blah
+
+
+## Source
+
+This blog post started out as an [RMarkdown](https://rmarkdown.rstudio.com/) document, the source of which can be found [here]() LINK.
 
 #### eof
 
