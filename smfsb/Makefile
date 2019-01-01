@@ -9,6 +9,12 @@ FORCE:
 $(FILE).md: $(FILE).Rmd
 	Rscript -e "library(knitr); knit('$(FILE).Rmd')"
 
+$(FILE).html: $(FILE).md
+	pandoc $(FILE).md -o $(FILE).html
+
+$(FILE).wp: $(FILE).md
+	./md2wp $(FILE).md > $(FILE).wp
+
 $(FILE).pdf: $(FILE).md
 	pandoc $(FILE).md -o $(FILE).pdf
 

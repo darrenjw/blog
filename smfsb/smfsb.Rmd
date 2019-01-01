@@ -6,7 +6,7 @@ In the [previous post](https://darrenjw.wordpress.com/2018/12/19/stochastic-mode
 
 ## Installation
 
-Since the package is on CRAN, the simplest way to install it is to enter
+The package is on CRAN - see the [CRAN package page](http://cran.r-project.org/web/packages/smfsb/) for details. So the simplest way to install it is to enter
 ```{r eval=FALSE}
 install.packages("smfsb")
 ```
@@ -22,37 +22,159 @@ help(package="smfsb")
 ?StepGillespie
 example(StepCLE1D)
 ```
-
+The version of the package on CRAN is almost certainly what you want. However, the package is developed on R-Forge - see the [R-Forge project page](https://r-forge.r-project.org/projects/smfsb/) for details. So the very latest version of the package can always be installed with
+```{r eval=FALSE}
+install.packages("smfsb", repos="http://R-Forge.R-project.org")
+```
+if you have a reason for wanting it.
 
 ## A brief tutorial
 
 The vignette gives a quick introduction the the library, which I don't need to repeat verbatim here. If you are new to the package, I recommend working through that before continuing. Here I'll concentrate on some of the new features associated with the third edition.
 
+### Simulating stochastic kinetic models
 
+Much of the book is concerned with the simulation of stochastic kinetic models using exact and approximate algorithms. Although the primary focus of the text is the application to modelling of intra-cellular processes, the methods are also appropriate for population modelling of ecological and epidemic processes. For example, we can start by simulating a simple [susceptible-infectious-recovered (SIR)](https://en.wikipedia.org/wiki/Compartmental_models_in_epidemiology) disease epidemic model.
 
+```{r fig.cap="Exact simulation of the SIR epidemic model"}
+set.seed(2)
+data(spnModels)
 
-Some text
+stepSIR = StepGillespie(SIR)
+plot(simTs(SIR$M, 0, 8, 0.05, stepSIR),
+  main="Exact simulation of the SIR model")
+```
+The focus of the text is stochastic simulation of discrete models, so that is the obvious place to start. But there is also support for continuous deterministic simulation.
 
-Some code:
+```{r fig.cap="Euler simulation of the SIR model"}
+plot(simTs(SIR$M, 0, 8, 0.05, StepEulerSPN(SIR)),
+  main="Euler simulation of the SIR model")
+```
+My favourite toy population dynamics model is the [Lotka-Volterra (LV)](https://en.wikipedia.org/wiki/Lotka%E2%80%93Volterra_equations) model, so I tend to use this frequently as a running example throughout the book. We can simulate this (exactly) as follows.
+```{r fig.cap="Exact simulation of the Lotka-Volterra model"}
+stepLV = StepGillespie(LV)
+plot(simTs(LV$M, 0, 30, 0.2, stepLV),
+  main="Exact simulation of the LV model")
 
-```{r}
-x=rnorm(5)
-y=x*x
-y
 ```
 
-Some more text
+### Stochastic reaction-diffusion modelling
 
-```{r}
-plot(x,y)
+The first two editions of the book were almost exclusively concerned with *well-mixed* systems, where spatial effects are ignorable. One of the main new features of the third edition is the inclusion of a new chapter on spatially extended systems. The focus is on models related to the reaction diffusion master equation (RDME) formulation, rather than individual particle-based simulations. For these models, space is typically divided into a regular grid of voxels, with reactions taking place as normal within each voxel, and additional reaction events included, corresponding to the diffusion of particles to adjacent voxels. So to specify such models, we just need an initial condition, a reaction model, and diffusion coefficients (one for each reacting species). So, we can carry out exact simulation of an RDME model for a 1D spatial domain as follows.
+```{r cache=TRUE,results="hide",fig.cap="Discrete 1D simulation of the LV model"}
+N=20; T=30
+x0=matrix(0, nrow=2, ncol=N)
+rownames(x0) = c("x1", "x2")
+x0[,round(N/2)] = LV$M
+stepLV1D = StepGillespie1D(LV, c(0.6, 0.6))
+xx = simTs1D(x0, 0, T, 0.2, stepLV1D, verb=TRUE)
+image(xx[1,,], main="Prey", xlab="Space", ylab="Time")
+image(xx[2,,], main="Predator", xlab="Space", ylab="Time")
+```
+Exact simulation of discrete stochastic reaction diffusion systems is very expensive (and the reference implementation provided in the package is very inefficient), so we will often use diffusion approximations based on the CLE.
+```{r cache=TRUE,fig.cap="Spatial CLE simulation of the 1D LV model"}
+stepLV1DC = StepCLE1D(LV, c(0.6, 0.6))
+xx = simTs1D(x0, 0, T, 0.2, stepLV1D)
+image(xx[1,,], main="Prey", xlab="Space", ylab="Time")
+image(xx[2,,], main="Predator", xlab="Space", ylab="Time")
+```
+We can think of this algorithm as an explicit numerical integration of the obvious [SPDE](https://en.wikipedia.org/wiki/Stochastic_partial_differential_equation) approximation to the exact model.
+
+The package also includes support for simulation of 2D systems. Again, we can use the Spatial CLE to speed things up.
+
+```{r cache=TRUE,fig.cap="Spatial CLE simulation of the 2D LV model"}
+m=70; n=50; T=10
+data(spnModels)
+x0=array(0, c(2,m,n))
+dimnames(x0)[[1]]=c("x1", "x2")
+x0[,round(m/2),round(n/2)] = LV$M
+stepLV2D = StepCLE2D(LV, c(0.6,0.6), dt=0.05)
+xx = simTs2D(x0, 0, T, 0.5, stepLV2D)
+N = dim(xx)[4]
+image(xx[1,,,N],main="Prey",xlab="x",ylab="y")
+image(xx[2,,,N],main="Predator",xlab="x",ylab="y")
 ```
 
-blah
+### Bayesian parameter inference
 
+Although much of the book is concerned with the problem of forward simulation, the final chapters are concerned with the inverse problem of estimating model parameters, such as reaction rate constants, from data. A computational Bayesian approach is adopted, with the main emphasis being placed on "likelihood free" methods, which rely on forward simulation to avoid explicit computation of sample path likelihoods. The second edition included some rudimentary code for a likelihood free particle marginal Metropolis-Hastings (PMMH) particle Markov chain Monte Carlo (pMCMC) algorithm. The third edition includes a more complete and improved implementation, in addition to approximate inference algorithms based on approximate Bayesian computation (ABC). 
+
+The key function underpinning the PMMH approach is `pfMLLik`, which computes an estimate of marginal model log-likelihood using a (bootstrap) particle filter. There is a new implementation of this function with the third edition. There is also a generic implementation of the Metropolis-Hastings algorithm, `metropolisHastings`, which can be combined with `pfMLLik` to create a PMMH algorithm. PMMH algorithms are very slow, but a full demo of how to use these functions for parameter inference is included in the package and can be run with
+```{r eval=FALSE}
+demo(PMCMC)
+```
+
+Simple rejection-based ABC methods are facilitated by the (very simple) function `abcRun`, which just samples from a prior and then carries out independent simulations in parallel before computing summary statistics. A simple illustration of the use of the function is given below.
+
+```{r cache=TRUE}
+data(LVdata)
+rprior <- function() { exp(c(runif(1, -3, 3),runif(1,-8,-2),runif(1,-4,2))) }
+rmodel <- function(th) { simTs(c(50,100), 0, 30, 2, stepLVc, th) }
+sumStats <- identity
+ssd = sumStats(LVperfect)
+distance <- function(s) {
+	diff = s - ssd
+	sqrt(sum(diff*diff))
+}
+rdist <- function(th) { distance(sumStats(rmodel(th))) }
+out = abcRun(10000, rprior, rdist)
+q=quantile(out$dist, c(0.01, 0.05, 0.1))
+print(q)
+accepted = out$param[out$dist < q[1],]
+print(summary(accepted))
+print(summary(log(accepted)))
+```
+
+Naive rejection-based ABC algorithms are notoriously inefficient, so the library also includes an implementation of a more efficient, sequential version of ABC, often known as ABC-SMC, in the function `abcSmc`. This function requires specification of a perturbation kernel to "noise up" the particles at each algorithm sweep. Again, the implementation is parallel, using the `parallel` package to run the required simulations in parallel on multiple cores. A simple illustration of use is given below.
+
+```{r cache=TRUE}
+rprior <- function() { c(runif(1, -3, 3), runif(1, -8, -2), runif(1, -4, 2)) }
+dprior <- function(x, ...) { dunif(x[1], -3, 3, ...) + 
+	dunif(x[2], -8, -2, ...) + dunif(x[3], -4, 2, ...) }
+rmodel <- function(th) { simTs(c(50,100), 0, 30, 2, stepLVc, exp(th)) }
+rperturb <- function(th){th + rnorm(3, 0, 0.5)}
+dperturb <- function(thNew, thOld, ...){sum(dnorm(thNew, thOld, 0.5, ...))}
+sumStats <- identity
+ssd = sumStats(LVperfect)
+distance <- function(s) {
+	diff = s - ssd
+	sqrt(sum(diff*diff))
+}
+rdist <- function(th) { distance(sumStats(rmodel(th))) }
+out = abcSmc(5000, rprior, dprior, rdist, rperturb,
+	dperturb, verb=TRUE, steps=6, factor=5)
+print(summary(out))
+```
+We can then plot some results with
+```{r results="hide",fig.cap="ABC-SMC posterior for the LV model"}
+hist(out[,1],30,main="log(c1)")
+hist(out[,2],30,main="log(c2)")
+hist(out[,3],30,main="log(c3)")
+```
+
+Although the inference methods are illustrated in the book in the context of parameter inference for stochastic kinetic models, their implementation is generic, and can be used with any appropriate parameter inference problem.
+
+## The `smfsbSBML` package
+
+`smfsbSBML` is another R package associated with the third edition of the book. This package is not on CRAN due to its dependency on a package not on CRAN, and hence is slightly less straightforward to install. Follow the available [installation instructions](https://github.com/darrenjw/smfsb/blob/master/Software.md#additional-r-package---smfsbsbml) to install the package. Once installed, you should be able to load the package with
+```{r message=FALSE}
+library(smfsbSBML)
+```
+This package provides a function for reading in SBML files and parsing them into the simulatable stochastic Petri net (SPN) objects used by the main `smfsb` R package. Examples of suitable [SBML models](https://github.com/darrenjw/smfsb/tree/master/models) are included in the main [smfsb GitHub repo](https://github.com/darrenjw/smfsb). An appropriate SBML model can be read and parsed with a command like:
+```{r eval=FALSE}
+model = sbml2spn("mySbmlModel.xml")
+```
+The resulting value, `model` is an SPN object which can be passed in to simulation functions such as `StepGillespie` for constructing stochastic simulation algorithms.
+
+## Other software
+
+In addition to the above R packages, I also have some Python scripts for converting between [SBML](http://sbml.org/Main_Page) and the SBML-shorthand notation I use in the book. See the [SBML-shorthand](https://www.staff.ncl.ac.uk/d.j.wilkinson/software/sbml-sh/) page for further details.
+
+Although R is a convenient language for teaching and learning about stochastic simulation, it isn't ideal for serious research-level scientific computing or computational statistics. So for the third edition of the book I have also developed [scala-smfsb](https://github.com/darrenjw/scala-smfsb), a library written in the [Scala](https://www.scala-lang.org/) programming language, which re-implements all of the models and algorithms from the third edition of the book in Scala, a fast, efficient, strongly-typed, compiled, functional programming language. I'll give an introduction to this library in a subsequent post, but in the meantime, it is already well documented, so see the [scala-smfsb repo](https://github.com/darrenjw/scala-smfsb) for further details, including information on installation, getting started, a tutorial, examples, API docs, etc.
 
 ## Source
 
-This blog post started out as an [RMarkdown](https://rmarkdown.rstudio.com/) document, the source of which can be found [here]() LINK.
+This blog post started out as an [RMarkdown](https://rmarkdown.rstudio.com/) document, the source of which can be found [here](https://github.com/darrenjw/blog/tree/master/smfsb).
 
 #### eof
 
