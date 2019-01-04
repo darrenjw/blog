@@ -3,7 +3,7 @@ name := "scala-smfsb"
 version := "0.1-SNAPSHOT"
 
 scalacOptions ++= Seq(
-  "-unchecked", "-deprecation", "-feature"
+  "-unchecked", "-deprecation", "-feature", "-Yrepl-class-based"
 )
 
 enablePlugins(TutPlugin)

@@ -95,9 +95,9 @@ val xx0 = xx00.updated(c/2, r/2, x0)
 val output = step(xx0, 0.0, 8.0)
 val f = Figure("2d LV reaction-diffusion simulation")
 val p0 = f.subplot(2, 1, 0)
-//p0 += image(PMatrix.toBDM(output map (_.data(0))))
+p0 += image(PMatrix.toBDM(output map (_.data(0))))
 val p1 = f.subplot(2, 1, 1)
-//p1 += image(PMatrix.toBDM(output map (_.data(1))))
+p1 += image(PMatrix.toBDM(output map (_.data(1))))
 ```
 
 ### Bayesian parameter inference
