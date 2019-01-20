@@ -24,6 +24,8 @@ package object rd {
     wi
   }
 
+  def toSfxIi(im: PMatrix[DenseVector[Int]]): WritableImage =
+    toSfxI(im map (v => v map (_.toDouble)))
 
 }
 
