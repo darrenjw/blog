@@ -16,7 +16,7 @@ object LvExact {
   def main(args: Array[String]): Unit = {
     val r = 100; val c = 120
     val model = SpnModels.lv[IntState]()
-    val step = Spatial.gillespie2d(model, DenseVector(0.6, 0.6))
+    val step = Spatial.gillespie2d(model, DenseVector(0.6, 0.6), maxH=1e12)
     val x00 = DenseVector(0, 0)
     val x0 = DenseVector(50, 100)
     val xx00 = PMatrix(r, c, Vector.fill(r*c)(x00))
