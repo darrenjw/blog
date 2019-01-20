@@ -1,5 +1,5 @@
 /*
-reaction-diffusion.scala
+LvCle.scala
 
 */
 
@@ -16,16 +16,15 @@ object LvCle {
     val pw = wi.pixelWriter
     val m = im.data.aggregate(0.0)((acc,v) => math.max(acc,max(v)), math.max(_,_))
     val rsi = im map (_ / m)
-    (0 until im.c) foreach (i =>
-      (0 until im.r) foreach (j =>
+    (0 until im.c).par foreach (i =>
+      (0 until im.r).par foreach (j =>
         pw.setColor(i, j, Color.rgb((rsi(i,j)(1)*255).toInt, 0, (rsi(i,j)(0)*255).toInt))
       ))
     wi
   }
 
-
   def main(args: Array[String]): Unit = {
-    val r = 300; val c = 400
+    val r = 400; val c = 500
     val model = SpnModels.lv[DoubleState]()
     val step = Spatial.cle2d(model, DenseVector(0.6, 0.6), 0.05)
     val x00 = DenseVector(0.0, 0.0)
