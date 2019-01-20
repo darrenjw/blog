@@ -1,9 +1,10 @@
 /*
-LvCle.scala
+package.scala
 
-*/
 
-object LvCle {
+ */
+
+package object rd {
 
   import smfsb._
   import breeze.linalg.{Vector => BVec, _}
@@ -23,19 +24,8 @@ object LvCle {
     wi
   }
 
-  def main(args: Array[String]): Unit = {
-    val r = 400; val c = 500
-    val model = SpnModels.lv[DoubleState]()
-    val step = Spatial.cle2d(model, DenseVector(0.6, 0.6), 0.05)
-    val x00 = DenseVector(0.0, 0.0)
-    val x0 = DenseVector(50.0, 100.0)
-    val xx00 = PMatrix(r, c, Vector.fill(r*c)(x00))
-    val xx0 = xx00.updated(c/2, r/2, x0)
-    val s = Stream.iterate(xx0)(step(_,0.0,0.1))
-    val si = s map (toSfxI(_))
-    scalaview.SfxImageViewer(si, 1, autoStart=true)
-  }
 
 }
 
 // eof
+
