@@ -27,6 +27,20 @@ package object rd {
   def toSfxIi(im: PMatrix[DenseVector[Int]]): WritableImage =
     toSfxI(im map (v => v map (_.toDouble)))
 
+  def toSfxI3(im: PMatrix[DenseVector[Double]]): WritableImage = {
+    val wi = new WritableImage(im.c, im.r)
+    val pw = wi.pixelWriter
+    val m = im.data.aggregate(0.0)((acc,v) => math.max(acc,max(v)), math.max(_,_))
+    val rsi = im map (_ / m)
+    (0 until im.c).par foreach (i =>
+      (0 until im.r).par foreach (j =>
+        pw.setColor(i, j, Color.rgb((rsi(i,j)(1)*255).toInt, (rsi(i,j)(0)*255).toInt, (rsi(i,j)(2)*255).toInt))
+      ))
+    wi
+  }
+
+
+
 }
 
 // eof
