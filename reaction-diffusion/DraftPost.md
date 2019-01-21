@@ -9,5 +9,8 @@ In this post we will look at one approach to this problem, based on an underlyin
 
 
 
+Further details relating to stochastic reaction-diffusion modelling can be found in Chapter 9 of my textbook, [Stochastic modelling for systems biology, third edition](https://github.com/darrenjw/smfsb).
+
+
 #### eof
 
