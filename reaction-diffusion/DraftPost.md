@@ -9,6 +9,8 @@ In this post we will look at one approach to this problem, based on an underlyin
 
 [a movie](lv-cle.mp4)
 
+![a movie as an image](lv-cle.mp4)
+
 
 [![a frame](lv-cle.png)](lv-cle.mp4)
 
