@@ -53,7 +53,7 @@ We can seed a simulation with a few infectious individuals in the centre of a ro
 
 This time we'll skip the exact simulation, since it's very slow and go straight to the spatial CLE. A simulation on a 250x300 grid is given below.
 
-MOVIE
+[![a frame](sir-cle.png)](sir-cle.mp4)
 
 ## PDE model
 
