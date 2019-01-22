@@ -1,6 +1,7 @@
 /*
 package.scala
 
+Shared code
 
  */
 

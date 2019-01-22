@@ -1,7 +1,7 @@
 /*
 LvRre2.scala
 
-Chemical Langevin approximation for a Lotka-Volterra system
+PDE approximation for a Lotka-Volterra system
 
 Numerical solution of an SPDE
 
