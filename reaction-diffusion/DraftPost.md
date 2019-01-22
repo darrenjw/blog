@@ -51,7 +51,10 @@ If we remove all of the noise terms from the spatial CLE, we get a set of couple
 
 It seems a bit harsh to describe a reaction-diffusion PDE as "boring", but it certainly isn't as interesting as the stochastic dynamics. Also, it has qualitatively quite different behaviour to the stochastic models, with wavefronts being less pronounced and less well separated.
 
-### Interacting wave fronts
+### Other initialisations
+
+[![a frame](lv-cle2.png)](lv-cle2.mp4)
+
 
 
 

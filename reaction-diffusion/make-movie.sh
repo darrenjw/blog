@@ -8,7 +8,7 @@ do
   short="${name%.*}"
   echo $short
   #pngtopnm "$name" | pnmscale 20 | pnmtopng > "${short}-s.png"
-  convert "$name" -scale 600x500 -define png:color-type=2 "${short}-s.png"
+  convert "$name" -scale 1200x600 -define png:color-type=2 "${short}-s.png"
 done
 
 rm -f movie.mp4
