@@ -6,7 +6,7 @@ There is a fairly large literature on [reaction-diffusion modelling](https://en.
 
 In this post we will look at one approach to the stochastic reaction-diffusion problem, based on an underlying stochastic process often described by the *reaction diffusion master equation* (RDME). We will start by generating exact realisations from this process using the *spatial Gillespie algorithm*, before switching to a continuous stochastic approximation often known as the [*spatial chemical Langevin equation*](https://dx.doi.org/10.1186%2Fs12976-015-0001-6) (spatial CLE). For fine discretisations, this spatial CLE is just an explicit numerical scheme for an associated reaction-diffusion *stochastic partial differential equation* (SPDE), and we can easily contrast such SPDE dynamics with their deterministic PDE approximation. We will investigate using simulation, based on my Scala library, [scala-smfsb](https://github.com/darrenjw/scala-smfsb), which accompanies the third edition of my textbook, [Stochastic modelling for systems biology](https://github.com/darrenjw/smfsb), as discussed in [previous](https://darrenjw.wordpress.com/2018/12/19/stochastic-modelling-for-systems-biology-third-edition/) [posts](https://darrenjw.wordpress.com/2019/01/04/the-scala-smfsb-library/).
 
-All of the code used to generate the plots and movies in this post is available in my [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion).
+All of the code used to generate the plots and movies in this post is available in my [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion), and is very simple to build and run.
 
 ## The Lotka-Volterra reaction network
 
@@ -41,7 +41,7 @@ The spatial CLE effectively approximates the true RDME dynamics with a set of co
 
 [![a frame](lv-cle.png)](lv-cle.mp4)
 
-Again, clicking on the final frame should give the movie. We see that although the quantitative details are slightly different to the exact algorithm, the essential qualitative behaviour of the system is captured well by the spatial CLE. Full code for this simulation is [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvCle.scala)
+Again, clicking on the frame should give the movie. We see that although the quantitative details are slightly different to the exact algorithm, the essential qualitative behaviour of the system is captured well by the spatial CLE. Full code for this simulation is [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvCle.scala).
 
 ### Reaction-diffusion PDE
 
@@ -49,17 +49,34 @@ If we remove all of the noise terms from the spatial CLE, we get a set of couple
 
 [![a frame](lv-rre.png)](lv-rre.mp4)
 
-It seems a bit harsh to describe a reaction-diffusion PDE as "boring", but it certainly isn't as interesting as the stochastic dynamics. Also, it has qualitatively quite different behaviour to the stochastic models, with wavefronts being less pronounced and less well separated.
+It seems a bit harsh to describe a reaction-diffusion PDE as "boring", but it certainly isn't as interesting as the stochastic dynamics. Also, it has qualitatively quite different behaviour to the stochastic models, with wavefronts being less pronounced and less well separated. The code for this one is [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvRre.scala).
 
 ### Other initialisations
 
+Instead of just seeding the simulation with some individuals in the central pixel, we can initialise 3 pixels. We can look first at a spatial CLE simulation.
+
 [![a frame](lv-cle2.png)](lv-cle2.mp4)
+
+Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvCle2.scala).
+
+We can look at the same problem, but now using a PDE.
 
 [![a frame](lv-rre2.png)](lv-rre2.mp4)
 
+Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvRre2.scala).
+
+Alternatively, we can initialise every pixel independently with random numbers of predator and prey. A movie for this is given below, following a short warm-up.
+
 [![a frame](lv-cle3.png)](lv-cle3.mp4)
 
+Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvCle3.scala).
+
+Again, we can look at the corresponding deterministic integration.
+
 [![a frame](lv-rre3.png)](lv-rre3.mp4)
+
+Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvRre3.scala).
+
 
 
 ## The SIR model
@@ -92,6 +109,7 @@ This time we'll skip the exact simulation, since it's very slow, and go straight
 [![a frame](sir-cle.png)](sir-cle.mp4)
 
 Here, green represents $S$, red $I$ and blue $R$. In this simulation, $I$ diffuses more slowly than $S$, and $R$ doesn't diffuse at all.
+Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/SirCle.scala).
 
 ## PDE model
 
@@ -99,7 +117,8 @@ If we ditch the noise to get a reaction-diffusion PDE model, the dynamics are as
 
 [![a frame](sir-rre.png)](sir-rre.mp4)
 
-Again, we see that the deterministic model is quite different to the stochastic version, and kind-of boring.
+Again, we see that the deterministic model is quite different to the stochastic version, and kind-of boring. Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/SirRre.scala).
+
 
 ## Further reading
 
