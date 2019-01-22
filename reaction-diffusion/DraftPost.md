@@ -18,7 +18,7 @@ $$X \longrightarrow 2X$$
 $$X + Y \longrightarrow 2Y$$
 $$Y \longrightarrow \emptyset$$
 
-with $X$ representing the *prey* species and $Y$ the *predator*. I showed how to simulate realisations from this process using the Scala library in the [previous post](https://darrenjw.wordpress.com/2019/01/04/the-scala-smfsb-library/). Here we will consider simulation of this model in 2d, and simulate exact realisation from the appropriate RDME using the spatial Gillespie algorithm. Full runnable code for the simulations are in the [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion), but the key lines are:
+with $X$ representing the *prey* species and $Y$ the *predator*. I showed how to simulate realisations from this process using the Scala library in the [previous post](https://darrenjw.wordpress.com/2019/01/04/the-scala-smfsb-library/). Here we will consider simulation of this model in 2d, and simulate exact realisation from the appropriate RDME using the spatial Gillespie algorithm. Full runnable code for this simulation is [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvExact.scala), but the key lines are:
 ```scala
 val r = 100; val c = 120
 val model = SpnModels.lv[IntState]()
@@ -41,7 +41,7 @@ The spatial CLE effectively approximates the true RDME dynamics with a set of co
 
 [![a frame](lv-cle.png)](lv-cle.mp4)
 
-Again, clicking on the final frame should give the movie. We see that although the quantitative details are slightly different to the exact algorithm, the essential qualitative behaviour of the system is captured well by the spatial CLE.
+Again, clicking on the final frame should give the movie. We see that although the quantitative details are slightly different to the exact algorithm, the essential qualitative behaviour of the system is captured well by the spatial CLE. Full code for this simulation is [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/LvCle.scala)
 
 ### Reaction-diffusion PDE
 
@@ -57,7 +57,9 @@ It seems a bit harsh to describe a reaction-diffusion PDE as "boring", but it ce
 
 [![a frame](lv-rre2.png)](lv-rre2.mp4)
 
+[![a frame](lv-cle3.png)](lv-cle3.mp4)
 
+[![a frame](lv-rre3.png)](lv-rre3.mp4)
 
 
 ## The SIR model
