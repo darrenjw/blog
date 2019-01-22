@@ -59,7 +59,7 @@ This time we'll skip the exact simulation, since it's very slow and go straight 
 
 If we ditch the noise to get a reaction-diffusion PDE model, the dynamics are as follows.
 
-MOVIE
+[![a frame](sir-rre.png)](sir-rre.mp4)
 
 ## Further reading
 
