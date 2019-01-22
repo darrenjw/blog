@@ -1,5 +1,5 @@
 /*
-LvCle2.scala
+LvRre2.scala
 
 Chemical Langevin approximation for a Lotka-Volterra system
 
@@ -9,7 +9,7 @@ Numerical solution of an SPDE
 
 package rd
 
-object LvCle2 {
+object LvRre2 {
 
   import smfsb._
   import breeze.linalg.{Vector => BVec, _}
@@ -18,7 +18,7 @@ object LvCle2 {
   def main(args: Array[String]): Unit = {
     val r = 300; val c = 600
     val model = SpnModels.lv[DoubleState]()
-    val step = Spatial.cle2d(model, DenseVector(0.6, 0.6), 0.05)
+    val step = Spatial.euler2d(model, DenseVector(0.6, 0.6), 0.05)
     val x00 = DenseVector(0.0, 0.0)
     val x0 = DenseVector(50.0, 100.0)
     val xx00 = PMatrix(r, c, Vector.fill(r*c)(x00))
