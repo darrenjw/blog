@@ -31,7 +31,7 @@ val s = Stream.iterate(xx0)(step(_,0.0,0.1))
 ```
 which sets up an infinite lazy `Stream` of states on a 100x120 grid over time steps of 0.1 units with diffusion rates of 0.6 for both species. We can then map this to a stream of images and visualise it using my [scala-view](https://github.com/darrenjw/scala-view) library (described in [this post](https://darrenjw.wordpress.com/2018/03/01/scala-view-animate-streams-of-images/)). Running gives the following output:
 
-FRAME AND MOVIE HERE
+[![a frame](lv-exact.png)](lv-exact.mp4)
 
 The above image is the final frame of a movie which can be viewed by clicking on the image. In the simulation, blue represents the prey species, $X$, and red represents the predator, $Y$. The simulation is initialised with a few prey and predators in the central pixel. At each time step of the simulation, either a reaction or a diffusion event may occur. If diffusion occurs, an individual moves from its current location to one of the four adjacent pixels. This algorithm is extremely computationally intensive, however well it is implemented. The implementation used here (using the function `Spatial.gillespie2d` in the `scala-smfsb` library) is quite inefficient. A more efficient implementation would use the [next subvolume method](https://ieeexplore.ieee.org/abstract/document/1389215) or similar algorithm. But since every reaction event is simulated sequentially, this algorithm is always going to be intolerably slow for most interesting problems.
 
@@ -120,9 +120,9 @@ If we ditch the noise to get a reaction-diffusion PDE model, the dynamics are as
 Again, we see that the deterministic model is quite different to the stochastic version, and kind-of boring. Code [here](https://github.com/darrenjw/blog/blob/master/reaction-diffusion/src/main/scala/rd/SirRre.scala).
 
 
-## Further reading
+## Further information
 
-All of the code used to generate the plots and movies in this post is available in an easily runnable form in my [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion). Further details relating to stochastic reaction-diffusion modelling based on the RDME can be found in Chapter 9 of my textbook, [Stochastic modelling for systems biology, third edition](https://github.com/darrenjw/smfsb).
+All of the code used to generate the plots and movies in this post is available in an easily runnable form in my [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion). It is very easy to adapt the examples to vary parameters and initial conditions, and to study other reaction systems. Further details relating to stochastic reaction-diffusion modelling based on the RDME can be found in Chapter 9 of my textbook, [Stochastic modelling for systems biology, third edition](https://github.com/darrenjw/smfsb).
 
 
 #### eof
