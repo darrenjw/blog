@@ -18,7 +18,18 @@ $$X \longrightarrow 2X$$
 $$X + Y \longrightarrow 2Y$$
 $$Y \longrightarrow \emptyset$$
 
-with $X$ representing the *prey* species and $Y$ the *predator*. I showed how to simulate realisations from this process using the Scala library in the [previous post](https://darrenjw.wordpress.com/2019/01/04/the-scala-smfsb-library/). Here we will consider simulation of this model in 2d, and simulate exact realisation from the appropriate RDME using the spatial Gillespie algorithm. We can run this on a 100x120 grid, as follows.
+with $X$ representing the *prey* species and $Y$ the *predator*. I showed how to simulate realisations from this process using the Scala library in the [previous post](https://darrenjw.wordpress.com/2019/01/04/the-scala-smfsb-library/). Here we will consider simulation of this model in 2d, and simulate exact realisation from the appropriate RDME using the spatial Gillespie algorithm. Full runnable code for the simulations are in the [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion), but the key lines are:
+```scala
+val r = 100; val c = 120
+val model = SpnModels.lv[IntState]()
+val step = Spatial.gillespie2d(model, DenseVector(0.6, 0.6), maxH=1e12)
+val x00 = DenseVector(0, 0)
+val x0 = DenseVector(50, 100)
+val xx00 = PMatrix(r, c, Vector.fill(r*c)(x00))
+val xx0 = xx00.updated(c/2, r/2, x0)
+val s = Stream.iterate(xx0)(step(_,0.0,0.1))
+```
+which sets up an infinite lazy `Stream` of states on a 100x120 grid over time steps of 0.1 units with diffusion rates of 0.6 for both species. We can then map this to a stream of images and visualise it using my [scala-view](https://github.com/darrenjw/scala-view) library (described in [this post](https://darrenjw.wordpress.com/2018/03/01/scala-view-animate-streams-of-images/)). Running gives the following output:
 
 FRAME AND MOVIE HERE
 
@@ -40,6 +51,10 @@ If we remove all of the noise terms from the spatial CLE, we get a set of couple
 
 It seems a bit harsh to describe a reaction-diffusion PDE as "boring", but it certainly isn't as interesting as the stochastic dynamics. Also, it has qualitatively quite different behaviour to the stochastic models, with wavefronts being less pronounced and less well separated.
 
+### Interacting wave fronts
+
+
+
 ## The SIR model
 
 Let's now turn attention to a spatial epidemic process model, the spatial susceptible-infectious-recovered model. Again, we'll start from the discrete reaction formulation.
@@ -47,13 +62,29 @@ Let's now turn attention to a spatial epidemic process model, the spatial suscep
 $$S + I \longrightarrow 2I$$
 $$I \longrightarrow R$$
 
+I'll add this model to the next release of `scala-smfsb`, but in the meantime we can easily define it ourselves with:
+```scala
+def sir[S: State](p: DenseVector[Double] = DenseVector(0.1, 0.5)): Spn[S] =
+  UnmarkedSpn[S](
+    List("S", "I", "R"),
+    DenseMatrix((1, 1, 0), (0, 1, 0)),
+    DenseMatrix((0, 2, 0), (0, 0, 1)),
+    (x, t) => {
+      val xd = x.toDvd
+      DenseVector(
+        xd(0) * xd(1) * p(0), xd(1) * p(1)
+      )}
+  )
+```
 We can seed a simulation with a few infectious individuals in the centre of a roughly homogeneous population of susceptibles.
 
 ## Spatial CLE
 
-This time we'll skip the exact simulation, since it's very slow and go straight to the spatial CLE. A simulation on a 250x300 grid is given below.
+This time we'll skip the exact simulation, since it's very slow, and go straight to the spatial CLE. A simulation on a 250x300 grid is given below.
 
 [![a frame](sir-cle.png)](sir-cle.mp4)
+
+Here, green represents $S$, red $I$ and blue $R$. In this simulation, $I$ diffuses more slowly than $S$, and $R$ doesn't diffuse at all.
 
 ## PDE model
 
@@ -61,9 +92,11 @@ If we ditch the noise to get a reaction-diffusion PDE model, the dynamics are as
 
 [![a frame](sir-rre.png)](sir-rre.mp4)
 
+Again, we see that the deterministic model is quite different to the stochastic version, and kind-of boring.
+
 ## Further reading
 
-All of the code used to generate the plots and movies in this post is available in an easily runnable form in my [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion). Further details relating to stochastic reaction-diffusion modelling can be found in Chapter 9 of my textbook, [Stochastic modelling for systems biology, third edition](https://github.com/darrenjw/smfsb).
+All of the code used to generate the plots and movies in this post is available in an easily runnable form in my [blog repo](https://github.com/darrenjw/blog/tree/master/reaction-diffusion). Further details relating to stochastic reaction-diffusion modelling based on the RDME can be found in Chapter 9 of my textbook, [Stochastic modelling for systems biology, third edition](https://github.com/darrenjw/smfsb).
 
 
 #### eof

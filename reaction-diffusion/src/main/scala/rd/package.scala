@@ -27,6 +27,18 @@ package object rd {
   def toSfxIi(im: PMatrix[DenseVector[Int]]): WritableImage =
     toSfxI(im map (v => v map (_.toDouble)))
 
+def sir[S: State](p: DenseVector[Double] = DenseVector(0.1, 0.5)): Spn[S] =
+  UnmarkedSpn[S](
+    List("S", "I", "R"),
+    DenseMatrix((1, 1, 0), (0, 1, 0)),
+    DenseMatrix((0, 2, 0), (0, 0, 1)),
+    (x, t) => {
+      val xd = x.toDvd
+      DenseVector(
+        xd(0) * xd(1) * p(0), xd(1) * p(1)
+      )}
+  )
+
   def toSfxI3(im: PMatrix[DenseVector[Double]]): WritableImage = {
     val wi = new WritableImage(im.c, im.r)
     val pw = wi.pixelWriter

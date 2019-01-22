@@ -15,18 +15,6 @@ object SirRre {
   import breeze.linalg.{Vector => BVec, _}
   import breeze.numerics._
 
-def sir[S: State](p: DenseVector[Double] = DenseVector(0.1, 0.5)): Spn[S] =
-  UnmarkedSpn[S](
-    List("S", "I", "R"),
-    DenseMatrix((1, 1, 0), (0, 1, 0)),
-    DenseMatrix((0, 2, 0), (0, 0, 1)),
-    (x, t) => {
-      val xd = x.toDvd
-      DenseVector(
-        xd(0) * xd(1) * p(0), xd(1) * p(1)
-      )}
-  )
-
 
   def main(args: Array[String]): Unit = {
     val r = 250; val c = 300
