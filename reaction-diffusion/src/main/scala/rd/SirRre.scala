@@ -1,7 +1,7 @@
 /*
-SirCle.scala
+SirRre.scala
 
-Chemical Langevin approximation for a SIR epidemic model
+PDE approximation for a SIR epidemic model
 
 Numerical solution of an SPDE
 
@@ -9,7 +9,7 @@ Numerical solution of an SPDE
 
 package rd
 
-object SirCle {
+object SirRre {
 
   import smfsb._
   import breeze.linalg.{Vector => BVec, _}
@@ -31,7 +31,7 @@ def sir[S: State](p: DenseVector[Double] = DenseVector(0.1, 0.5)): Spn[S] =
   def main(args: Array[String]): Unit = {
     val r = 250; val c = 300
     val model = sir[DoubleState]()
-    val step = Spatial.cle2d(model, DenseVector(3.0, 2.0, 0.0), 0.005)
+    val step = Spatial.euler2d(model, DenseVector(3.0, 2.0, 0.0), 0.005)
     val x00 = DenseVector(100.0, 0.0, 0.0)
     val x0 = DenseVector(50.0, 50.0, 0.0)
     val xx00 = PMatrix(r, c, Vector.fill(r*c)(x00))
