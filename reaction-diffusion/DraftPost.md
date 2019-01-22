@@ -55,6 +55,8 @@ It seems a bit harsh to describe a reaction-diffusion PDE as "boring", but it ce
 
 [![a frame](lv-cle2.png)](lv-cle2.mp4)
 
+[![a frame](lv-rre2.png)](lv-rre2.mp4)
+
 
 
 
