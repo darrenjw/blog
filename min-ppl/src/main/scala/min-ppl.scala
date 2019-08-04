@@ -1,26 +1,12 @@
-/*
-min-ppl.scala
-A minimal probabilistic programming language
-*/
-
 object MinPpl {
 
   import breeze.stats.{distributions => bdist}
   import breeze.linalg.DenseVector
 
-  //implicit val numParticles = 100
   implicit val numParticles = 300
-  //implicit val numParticles = 1000
-  //implicit val numParticles = 2000
   
   case class Particle[T](v: T, lw: Double) { // value and log-weight
     def map[S](f: T => S): Particle[S] = Particle(f(v), lw)
-    // TODO: Don't need flatMap in min version
-    // TODO: OR, re-write Prob.flatMap to use it...
-    def flatMap[S](f: T => Particle[S]): Particle[S] = {
-      val ps = f(v)
-      Particle(ps.v, lw + ps.lw)
-    }
   }
 
   trait Prob[T] {
@@ -34,14 +20,12 @@ object MinPpl {
     def resample(implicit N: Int): Prob[T] = {
       val lw = particles map (_.lw)
       val mx = lw reduce (math.max(_,_))
-      //val np = particles.length ; println(s"$np $mx") // TODO: Debug code
       val rw = lw map (lwi => math.exp(lwi - mx))
       val law = mx + math.log(rw.sum/(rw.length))
       val ind = bdist.Multinomial(DenseVector(rw.toArray)).sample(N)
       val newParticles = ind map (i => particles(i))
       Empirical(newParticles.toVector map (pi => Particle(pi.v, law)))
     }
-    // TODO: don't strictly need "cond" in a minimal PPL...
     def cond(ll: T => Double): Prob[T] =
       Empirical(particles map (p => Particle(p.v, p.lw + ll(p.v))))
     def empirical: Vector[T] = resample.particles.map(_.v)
@@ -78,6 +62,3 @@ object MinPpl {
   }
 
 }
-
-// eof
-

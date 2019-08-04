@@ -20,5 +20,7 @@ resolvers ++= Seq(
     "https://oss.sonatype.org/content/repositories/releases/"
 )
 
+enablePlugins(TutPlugin)
+
 scalaVersion := "2.13.0"
 

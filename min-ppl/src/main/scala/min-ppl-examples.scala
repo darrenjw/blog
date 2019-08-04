@@ -1,8 +1,6 @@
 /*
-min-ppl.scala
-A minimal probabilistic programming language
-Examples
-
+min-ppl-examples.scala
+Examples for a  minimal probabilistic programming language
 */
 
 object MinPplExamples {
@@ -202,6 +200,11 @@ object MinPplExamples {
 
   def main(args: Array[String]): Unit = {
     println("Hi")
+    example1
+    example1a
+    example2
+    example2a
+    example3
     example4
     println("Bye")
   }
