@@ -1,4 +1,4 @@
-# Write your own general purpose monadic probabilistic programming language from scratch in 50 lines of (Scala) code
+# Write your own general-purpose monadic probabilistic programming language from scratch in 50 lines of (Scala) code
 
 ## Background
 
@@ -15,7 +15,7 @@ To illustrate these principles I want to develop a fairly *minimal* PPL, so that
 
 ## The language, in 50 lines of code
 
-Without further ado, let's just write the PPL. I'm using plain Scala, with just a dependency on the [Breeze](https://github.com/scalanlp/breeze) scientific library, which I'm going to use for simulating random numbers from standard distributions, and evaluation of their log densities. I have a directory of materials associated with this post in a [git repo](https://github.com/darrenjw/blog/tree/master/min-ppl). This post is derived from an executable [tut](http://tpolecat.github.io/tut/) document (so you know it works), which can be found [here](https://github.com/darrenjw/blog/blob/master/min-ppl/src/main/tut/DraftPost.md). If you just want to follow along copying code at the command prompt, just run [sbt](https://www.scala-sbt.org/) from an empty or temp directory, and copy the following to spin up a Scala console with the Breeze dependency:
+Without further ado, let's just write the PPL. I'm using plain [Scala](https://www.scala-lang.org/), with just a dependency on the [Breeze](https://github.com/scalanlp/breeze) scientific library, which I'm going to use for simulating random numbers from standard distributions, and evaluation of their log densities. I have a directory of materials associated with this post in a [git repo](https://github.com/darrenjw/blog/tree/master/min-ppl). This post is derived from an executable [tut](http://tpolecat.github.io/tut/) document (so you know it works), which can be found [here](https://github.com/darrenjw/blog/blob/master/min-ppl/src/main/tut/DraftPost.md). If you just want to follow along copying code at the command prompt, just run [sbt](https://www.scala-sbt.org/) from an empty or temp directory, and copy the following to spin up a Scala console with the Breeze dependency:
 ```scala
 set libraryDependencies += "org.scalanlp" %% "breeze" % "1.0-RC4"
 set libraryDependencies += "org.scalanlp" %% "breeze-natives" % "1.0-RC4"
@@ -86,7 +86,7 @@ trait Dist[T] extends Prob[T] {
   def fitQ(obs: T): Prob[T] = fitQ(List(obs))
 }
 ```
-The `fit` method re-weights a particle set according to the observed log-likelihood. For convenience, it also returns a particle cloud representing the posterior-predictive distribution of an iid value from the same distribution. This is handy, but comes at the expense of introducing and additional particle cloud. So, if you aren't interested in the posterior predictive, you can avoid this cost by using the `fitQ` method (for "fit quick"), which doesn't return anything useful. We'll see examples of this in practice, shortly. Note that the `fitQ` methods aren't strictly required for our "minimal" PPL, so we can save a couple of lines by omitting them if necessary. Similarly for the variants which allow conditioning on a collection of iid observations from the same distribution.
+The `fit` method re-weights a particle set according to the observed log-likelihood. For convenience, it also returns a particle cloud representing the posterior-predictive distribution of an iid value from the same distribution. This is handy, but comes at the expense of introducing an additional particle cloud. So, if you aren't interested in the posterior predictive, you can avoid this cost by using the `fitQ` method (for "fit quick"), which doesn't return anything useful. We'll see examples of this in practice, shortly. Note that the `fitQ` methods aren't strictly required for our "minimal" PPL, so we can save a couple of lines by omitting them if necessary. Similarly for the variants which allow conditioning on a collection of iid observations from the same distribution.
 
 At this point we are essentially done. But for convenience, we can define a few standard distributions to help get new users of our PPL started. Of course, since the PPL is embedded, it is trivial to add our own additional distributions later.
 ```tut:silent
