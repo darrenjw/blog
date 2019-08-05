@@ -126,22 +126,30 @@ val modEmp = mod.empirical
 meanVar(modEmp map (_._1)) // mu
 meanVar(modEmp map (_._2)) // tau
 ```
-So, the point is that the syntactic sugar for monadic binds (`flatMaps`) provided by Scala's for-expressions (similar to do-notation in Haskell) leads to readable code not so different to that in well-known general-purpose PPLs such as BUGS, JAGS, or Stan. There are some important differences, however. In particular, the embedded DSL has probabilistic programs as regular values in the host language. These may be manipulated and composed like other values. This makes this probabilistic programming language more composable than the aforementioned languages, which makes it much simpler to build large, complex probabilistic programs from simpler, well-tested, components, in a scalable way. That is, this PPL we have obtained "for free" is actually in many ways *better* than most well-known PPLs.
+Note the use of the `empirical` method to turn the distribution into an unweighted set of particles for Monte Carlo analysis. Anyway, the main point is that the syntactic sugar for monadic binds (`flatMaps`) provided by Scala's `for`-expressions (similar to `do`-notation in Haskell) leads to readable code not so different to that in well-known general-purpose PPLs such as BUGS, JAGS, or Stan. There are some important differences, however. In particular, the embedded DSL has probabilistic programs as regular values in the host language. These may be manipulated and composed like other values. This makes this probabilistic programming language more composable than the aforementioned languages, which makes it much simpler to build large, complex probabilistic programs from simpler, well-tested, components, in a scalable way. That is, this PPL we have obtained "for free" is actually in many ways *better* than most well-known PPLs.
 
 ### Linear model
 
-Because our PPL is embedded, we can take full advantage of the power of the host programming language to build our models. Let's explore this in the context of Bayesian estimation of a linear model.
-
+Because our PPL is embedded, we can take full advantage of the power of the host programming language to build our models. Let's explore this in the context of Bayesian estimation of a linear model. We'll start with some data.
 ```tut:book
 val x = List(1.0,2,3,4,5,6)
 val y = List(3.0,2,4,5,5,6)
 val xy = x zip y
+```
+Now, our (simple) linear regression model will be parametrised by an intercept, `alpha`, a slope, `beta`, and a residual variance, `v`. So, for convenience, let's define an ADT representing a particular linear model.
+```tut:book
 case class Param(alpha: Double, beta: Double, v: Double)
+```
+Now we can define a prior distribution over models as follows.
+```tut:book
 val prior = for {
   alpha <- Normal(0,10)
   beta <- Normal(0,4)
   v <- Gamma(1,0.1)
 } yield Param(alpha, beta, v)
+```
+Since our language doesn't include any direct syntactic support for fitting regression models, we can define our own function for conditioning a distribution over models on a data point, which we can then apply to our prior as a fold over the available data.
+```tut:book
 def addPoint(current: Prob[Param], obs: (Double, Double)): Prob[Param] = for {
     p <- current
     (x, y) = obs
@@ -152,8 +160,55 @@ meanVar(mod map (_.alpha))
 meanVar(mod map (_.beta))
 meanVar(mod map (_.v))
 ```
+We could easily add syntactic support to our language to enable the fitting of regression-style models, as is done in [Rainier](https://github.com/stripe/rainier), of which more later.
 
 ### Dynamic generalised linear model
 
+The previous examples have been fairly simple, so let's finish with something a bit less trivial. Our language is quite flexible enough to allow the analysis of a dynamic generalised linear model (DGLM). Here we'll fit a Poisson DGLM with a log-link and a simple Brownian state evolution. More complex models are more-or-less similarly straightforward. The model is parametrised by an initial state, `state0`, and and evolution variance, `w`.
+```tut:book
+val data = List(2,1,0,2,3,4,5,4,3,2,1)
+
+val prior = for {
+  w <- Gamma(1, 1)
+  state0 <- Normal(0.0, 2.0)
+} yield (w, List(state0))
+```
+We can define a function to create a new hidden state, prepend it to the list of hidden states, and condition on the observed value at that time point as follows.
+```tut:book
+def addTimePoint(current: Prob[(Double, List[Double])],
+  obs: Int): Prob[(Double, List[Double])] = for {
+  tup <- current
+  (w, states) = tup
+  os = states.head
+  ns <- Normal(os, w)
+  _ <- Poisson(math.exp(ns)).fitQ(obs)
+} yield (w, ns :: states)
+```
+We then run our (augmented state) particle filter as a fold over the time series.
+```tut:book
+val mod = data.foldLeft(prior)(addTimePoint(_,_)).empirical
+meanVar(mod map (_._1)) // w
+meanVar(mod map (_._2.reverse.head)) // state0 (initial state)
+meanVar(mod map (_._2.head)) // stateN (final state)
+```
+
 ## Summary, conclusions, and further reading
+
+So, we've seen how we can build a fully functional, general-purpose, compositional, monadic PPL from scratch in 50 lines of code, and we've seen how we can use it to solve real, analytically intractable Bayesian inference problems of non-trivial complexity. Of course, there are many limitations to using exactly this PPL *implementation* in practice. The algorithm becomes intolerably slow for deeply nested models, and uses unreasonably large amounts of RAM for large numbers of particles. It also suffers from a particle degeneracy problem if there are too many conditioning events. But it is important to understand that these are all deficiencies of the naive *inference algorithm* used, not the *PPL itself*. The PPL is flexible and compositional and can be used to build models of arbitrary size and complexity - it just needs to be underpinned by a better, more efficient, inference algorithm. [Rainier](https://github.com/stripe/rainier) is a Scala library I've blogged about [previously](https://darrenjw.wordpress.com/2018/06/10/bayesian-hierarchical-modelling-with-rainier/) which uses a very similar PPL to the one described here, but is instead underpinned by a fast, efficient, [HMC](https://en.wikipedia.org/wiki/Hamiltonian_Monte_Carlo) algorithm. With my student Jonny Law, we have recently arXived a paper on [Functional probabilistic programming for scalable Bayesian modelling](https://github.com/jonnylaw/prob-programming-examples), discussing some of these issues, and exploring the compositional nature of monadic PPLs (somewhat glossed over in this post).
+
+Since the same PPL can be underpinned by different inference algorithms encapsulated as probability monads, an obvious question is whether it is possible to abstract the PPL away from the inference algorithm implementation. Of course, the answer is "yes", and this has been explored to great effect in papers such as Scibior et al (2015) and Scibior et al (2018). As well as allowing *alternative* inference algorithms to be applied to the same probabilistic program, it also enables the *composing* of inference algorithms - for example, composing a [MH](https://en.wikipedia.org/wiki/Metropolis%E2%80%93Hastings_algorithm) algorithm with an [SMC](https://en.wikipedia.org/wiki/Particle_filter) algorithm in order to get a [PMMH](https://darrenjw.wordpress.com/2011/05/17/the-particle-marginal-metropolis-hastings-pmmh-particle-mcmc-algorithm/) algorithm. The ideas are implemented in an embedded DSL for Haskell, [monad-bayes](https://github.com/adscib/monad-bayes). If you are not used to [Haskell](https://www.haskell.org/), the syntax will probably seem a bit more intimidating than Scala's, but the semantics are actually quite similar, with the main semantic difference being that Scala is strictly evaluated by default, whereas Haskell is lazily evaluated by default. Both languages support both lazy and strict evaluation - the difference relates simply to default behaviour, but is important nevertheless.
+
+### Papers
+
+* Law and Wilkinson (2018) Functional probabilistic programming for scalable Bayesian modelling
+* Scibior et al (2015) [Practical probabilistic programming with monads](http://mlg.eng.cam.ac.uk/pub/pdf/SciGhaGor15.pdf)
+* Scibior et al (2018) [Functional programming for modular Bayesian inference](https://www.cs.ubc.ca/~ascibior/icfp2018.pdf)
+
+### Software
+
+* [min-ppl](https://github.com/darrenjw/blog/tree/master/min-ppl) - code associated with this blog post
+* [Rainier](https://github.com/stripe/rainier) - a more efficient PPL with similar syntax
+* [monad-bayes](https://github.com/adscib/monad-bayes) - a Haskell library exploring related ideas
+
+
 
