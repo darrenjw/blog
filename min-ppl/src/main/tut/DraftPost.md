@@ -141,7 +141,7 @@ val modEmp = mod.empirical
 meanVar(modEmp map (_._1.toDouble)) // count
 meanVar(modEmp map (_._2)) // tau
 ```
-I've included this mainly as an example of inference for a discrete-valued parameter. There are people out there who will tell you that discrete parameters are bad/evil/impossible. But they are lying to you - not everything interesting is a smooth manifold - discrete parameters are cool!
+I've included this mainly as an example of inference for a discrete-valued parameter. There are people out there who will tell you that discrete parameters are bad/evil/impossible. This isn't true - discrete parameters are cool!
 
 ### Linear model
 
