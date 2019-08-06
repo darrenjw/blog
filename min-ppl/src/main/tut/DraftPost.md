@@ -126,7 +126,22 @@ val modEmp = mod.empirical
 meanVar(modEmp map (_._1)) // mu
 meanVar(modEmp map (_._2)) // tau
 ```
-Note the use of the `empirical` method to turn the distribution into an unweighted set of particles for Monte Carlo analysis. Anyway, the main point is that the syntactic sugar for monadic binds (`flatMaps`) provided by Scala's `for`-expressions (similar to `do`-notation in Haskell) leads to readable code not so different to that in well-known general-purpose PPLs such as BUGS, JAGS, or Stan. There are some important differences, however. In particular, the embedded DSL has probabilistic programs as regular values in the host language. These may be manipulated and composed like other values. This makes this probabilistic programming language more composable than the aforementioned languages, which makes it much simpler to build large, complex probabilistic programs from simpler, well-tested, components, in a scalable way. That is, this PPL we have obtained "for free" is actually in many ways *better* than most well-known PPLs.
+Note the use of the `empirical` method to turn the distribution into an unweighted set of particles for Monte Carlo analysis. Anyway, the main point is that the syntactic sugar for monadic binds (`flatMaps`) provided by Scala's `for`-expressions (similar to `do`-notation in Haskell) leads to readable code not so different to that in well-known general-purpose PPLs such as [BUGS](http://www.openbugs.net/), [JAGS](http://mcmc-jags.sourceforge.net/), or [Stan](https://mc-stan.org/). There are some important differences, however. In particular, the embedded DSL has probabilistic programs as regular values in the host language. These may be manipulated and composed like other values. This makes this probabilistic programming language more composable than the aforementioned languages, which makes it much simpler to build large, complex probabilistic programs from simpler, well-tested, components, in a scalable way. That is, this PPL we have obtained "for free" is actually in many ways *better* than most well-known PPLs.
+
+### Noisy measurements of a count
+
+Here we'll look at the problem of inference for a discrete count given some noisy iid continuous measurements of it.
+```tut:book
+val mod = for {
+  count <- Poisson(10)
+  tau <- Gamma(1, 0.1)
+  _ <- Normal(count, 1.0/tau).fitQ(List(4.2,5.1,4.6,3.3,4.7,5.3))
+} yield (count, tau)
+val modEmp = mod.empirical
+meanVar(modEmp map (_._1.toDouble)) // count
+meanVar(modEmp map (_._2)) // tau
+```
+I've included this mainly as an example of inference for a discrete-valued parameter. There are people out there who will tell you that discrete parameters are bad/evil/impossible. But they are lying to you - not everything interesting is a smooth manifold - discrete parameters are cool!
 
 ### Linear model
 
@@ -200,7 +215,7 @@ Since the same PPL can be underpinned by different inference algorithms encapsul
 
 ### Papers
 
-* Law and Wilkinson (2018) [Functional probabilistic programming for scalable Bayesian modelling](https://github.com/jonnylaw/prob-programming-examples)
+* Law and Wilkinson (2019) [Functional probabilistic programming for scalable Bayesian modelling](https://github.com/jonnylaw/prob-programming-examples)
 * Scibior et al (2015) [Practical probabilistic programming with monads](http://mlg.eng.cam.ac.uk/pub/pdf/SciGhaGor15.pdf)
 * Scibior et al (2018) [Functional programming for modular Bayesian inference](https://www.cs.ubc.ca/~ascibior/icfp2018.pdf)
 

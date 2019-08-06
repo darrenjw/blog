@@ -215,12 +215,12 @@ object MinPplExamples {
 
   def main(args: Array[String]): Unit = {
     println("Hi")
-    //example1
-    //example1a
-    //example2
-    //example2a
-    //example3
-    //example4
+    example1
+    example1a
+    example2
+    example2a
+    example3
+    example4
     example5
     println("Bye")
   }
