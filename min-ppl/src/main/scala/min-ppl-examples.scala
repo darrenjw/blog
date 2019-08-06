@@ -7,6 +7,7 @@ object MinPplExamples {
 
   import MinPpl._
   import breeze.stats.{meanAndVariance => meanVar}
+  import breeze.linalg.DenseVector
 
   // Normal random sample
   def example1 = {
