@@ -18,6 +18,7 @@ To illustrate these principles I want to develop a fairly *minimal* PPL, so that
 Without further ado, let's just write the PPL. I'm using plain [Scala](https://www.scala-lang.org/), with just a dependency on the [Breeze](https://github.com/scalanlp/breeze) scientific library, which I'm going to use for simulating random numbers from standard distributions, and evaluation of their log densities. I have a directory of materials associated with this post in a [git repo](https://github.com/darrenjw/blog/tree/master/min-ppl). This post is derived from an executable [tut](http://tpolecat.github.io/tut/) document (so you know it works), which can be found [here](https://github.com/darrenjw/blog/blob/master/min-ppl/src/main/tut/DraftPost.md). If you just want to follow along copying code at the command prompt, just run [sbt](https://www.scala-sbt.org/) from an empty or temp directory, and copy the following to spin up a Scala console with the Breeze dependency:
 ```scala
 set libraryDependencies += "org.scalanlp" %% "breeze" % "1.0-RC4"
+set libraryDependencies += "org.scalanlp" %% "breeze-viz" % "1.0-RC4"
 set libraryDependencies += "org.scalanlp" %% "breeze-natives" % "1.0-RC4"
 set scalaVersion := "2.13.0"
 console
