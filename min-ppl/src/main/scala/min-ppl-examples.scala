@@ -196,16 +196,32 @@ object MinPplExamples {
     println(meanVar(mod map (_.v)))
   }
 
+  // Noisy observations of a count
+  def example5 = {
+    val mod = for {
+      count <- Poisson(10)
+      tau <- Gamma(1,0.1)
+      _ <- Normal(count,1.0/tau).fitQ(List(4.2,5.1,4.6,3.3,4.7,5.3))
+    } yield (count,tau)
+    val modEmp = mod.empirical
+    print("count : ")
+    println(meanVar(modEmp map (_._1.toDouble)))
+    print("tau : ")
+    println(meanVar(modEmp map (_._2)))
+  }
+
+
   // Main entry point
 
   def main(args: Array[String]): Unit = {
     println("Hi")
-    example1
-    example1a
-    example2
-    example2a
-    example3
-    example4
+    //example1
+    //example1a
+    //example2
+    //example2a
+    //example3
+    //example4
+    example5
     println("Bye")
   }
 
