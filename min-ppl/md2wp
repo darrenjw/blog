@@ -1,0 +1,16 @@
+#!/bin/sh
+# md2wp
+# convert github flavoured markdown to wordpress html
+
+cat $1 | \
+  sed 's/```scala/```/g' | \
+  sed 's/```bash/```/g' | \
+  pandoc -f markdown_github -t html5 | \
+  sed 's/<pre><code>/[sourcecode language="scala" light="true"]\n/g' | \
+  sed 's|</code></pre>|\n[/sourcecode]|g' | \
+  sed 's/&quot;/"/g' | \
+  sed 's/&gt;/>/g' | \
+  sed 's/&lt;/</g'
+
+
+# eof
