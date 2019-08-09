@@ -1,4 +1,4 @@
-name := "min-ppl"
+name := "min-ppl2"
 
 version := "0.1-SNAPSHOT"
 

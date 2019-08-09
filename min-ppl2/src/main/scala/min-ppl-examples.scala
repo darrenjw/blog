@@ -1,11 +1,11 @@
 /*
 min-ppl-examples.scala
-Examples for a  minimal probabilistic programming language
+Examples for a minimal probabilistic programming language
 */
 
-object MinPplExamples {
+object MinPplExamples2 {
 
-  import MinPpl._
+  import MinPpl2._
   import breeze.stats.{meanAndVariance => meanVar}
   import breeze.linalg.DenseVector
 
