@@ -10,11 +10,23 @@ object MinPplExamples2 {
   import MinPpl2._
   import breeze.stats.{meanAndVariance => meanVar}
   import breeze.linalg.DenseVector
-
+  import cats._
+  import cats.implicits._
+  import cats.syntax._
 
   // Zip vs flatMap
   def example1 = {
-
+    println("tupling")
+    val prior = Applicative[Prob].tuple3(Normal(0,1), Gamma(1,1), Poisson(10))
+    println(meanVar(prior.empirical.map(_._2)))
+    println("binding")
+    val prior2 = for {
+      x <- Normal(0,1)
+      y <- Gamma(1,1)
+      z <- Poisson(10)
+    } yield (x,y,z)
+    println(meanVar(prior2.empirical.map(_._2)))
+    print("done")
   }
 
   // Poisson DGLM
