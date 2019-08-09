@@ -125,17 +125,5 @@ class PplSpec extends AnyFlatSpec with Tolerance {
     assert(mvz.variance === 21.214 +- 1.5)
   }
 
-  it should "deep chain correctly" in {
-    val deep = for {
-      w <- Normal(2.0,1.0)
-      x <- Normal(w,1)
-      y <- Normal(x,2)
-      z <- Normal(y,1)
-    } yield z
-    val mvz = meanVar(deep.empirical)
-    assert(mvz.mean === 2.0 +- 0.2)
-    assert(mvz.variance === 5.0 +- 0.5)
-  }
-
 }
 
