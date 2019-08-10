@@ -8,7 +8,7 @@ Materials for this post can be found in my [blog repo](https://github.com/darren
 
 ## An SMC-based monad
 
-The idea behind the approach to binding used in this filter is to mimic the "predict" step of a bootstrap [particle filter](https://en.wikipedia.org/wiki/Particle_filter). Here, for each particle in the source distribution, exactly *one* particle is drawn from the required conditional distribution and paired with the source particle, preserving the source particle's original weight. So, in order to operationalise this, we will need a `draw` method adding into our probability monad. It will also simplify things to add a `flatMap` method to our `Particle` type constructor.
+The idea behind the approach to binding used in this monad is to mimic the "predict" step of a bootstrap [particle filter](https://en.wikipedia.org/wiki/Particle_filter). Here, for each particle in the source distribution, exactly *one* particle is drawn from the required conditional distribution and paired with the source particle, preserving the source particle's original weight. So, in order to operationalise this, we will need a `draw` method adding into our probability monad. It will also simplify things to add a `flatMap` method to our `Particle` type constructor.
 
 To follow along, you can type `sbt console` from the `min-ppl2` directory of my blog repo, then paste blocks of code one at a time.
 ```tut:silent
@@ -73,7 +73,7 @@ object Wrapped {
 }
 import Wrapped._
 ```
-As before, if you are pasting code blocks into the REPL, you will need to use `paste:` mode to paste these two definitions together.
+As before, if you are pasting code blocks into the REPL, you will need to use `:paste` mode to paste these two definitions together.
 
 The essential structure is similar to that from the previous post, but with a few notable differences. Most fundamentally, we now require any concrete implementation to provide a `draw` method returning a single particle from the distribution. Like before, we are not worrying about purity of functional code here, and using a standard random number generator with a globally mutating state. We can define a `mapP` method (for "map particle") using the new `flatMap` method on `Particle`, and then use that to define `map` and `flatMap` for `Prob[_]`. Crucially, `draw` is used to define `flatMap` without requiring a Cartesian product of distributions to be formed.
 

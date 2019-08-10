@@ -94,8 +94,8 @@ object MinPplExamples2 {
 
   def main(args: Array[String]): Unit = {
     println("Hi")
-    example1
-    // example2
+    //example1
+    example2
     println("Bye")
   }
 
