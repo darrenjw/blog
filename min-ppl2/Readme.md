@@ -1,8 +1,6 @@
 # min-ppl2
 
-## Probability monad for a bootstrap particle filter
-
-**Resources for a blog post in prep**
+## [A probability monad for the bootstrap particle filter](https://darrenjw.wordpress.com/2019/08/10/a-probability-monad-for-the-bootstrap-particle-filter/)
 
 If you have (a recent JDK, and) [sbt](https://www.scala-sbt.org/) installed, you can compile and run the examples with `sbt run`, or run some tests with `sbt test` (slow), or compile the [tut](http://tpolecat.github.io/tut/) document that formed the draft of the post with `sbt tut`.
 
