@@ -16,16 +16,23 @@ object MinPplExamples2 {
 
   // Zip vs flatMap
   def example1 = {
-    println("tupling")
-    val prior = Applicative[Prob].tuple3(Normal(0,1), Gamma(1,1), Poisson(10))
-    println(meanVar(prior.empirical.map(_._2)))
-    println("binding")
-    val prior2 = for {
+    println("binding with for")
+    val prior1 = for {
       x <- Normal(0,1)
       y <- Gamma(1,1)
       z <- Poisson(10)
     } yield (x,y,z)
+    println(meanVar(prior1.empirical.map(_._2)))
+    println("binding with flatMap")
+    val prior2 =
+      Normal(0,1) flatMap {x =>
+        Gamma(1,1) flatMap {y =>
+          Poisson(10) map {z =>
+            (x,y,z)}}}
     println(meanVar(prior2.empirical.map(_._2)))
+    println("tupling")
+    val prior3 = Applicative[Prob].tuple3(Normal(0,1), Gamma(1,1), Poisson(10))
+    println(meanVar(prior3.empirical.map(_._2)))
     print("done")
   }
 
