@@ -37,8 +37,6 @@ class MyPropertyTests extends AnyFlatSpec with Matchers with ScalaCheckPropertyC
 
 }
 
-
-
 // eof
 
 

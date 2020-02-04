@@ -12,38 +12,28 @@ scalacOptions ++= Seq(
 addCompilerPlugin("org.typelevel" %% "kind-projector" % "0.11.0" cross CrossVersion.full)
 addCompilerPlugin("org.scalamacros" %% "paradise" % "2.1.1" cross CrossVersion.full)
 
+enablePlugins(MdocPlugin)
+
 libraryDependencies  ++= Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % "test",
-  "org.scalactic" %% "scalactic" % "3.0.8",
+  "org.scalactic" %% "scalactic" % "3.0.8" % "test",
   "org.typelevel" %% "cats-core" % "2.0.0",
-  "org.typelevel" %% "cats-free" % "2.0.0",
-  "org.typelevel" %% "cats-laws" % "2.0.0",
-  "org.typelevel" %% "cats-effect" % "2.0.0",
   "org.typelevel" %% "discipline-core" % "1.0.0",
-  "org.typelevel" %% "discipline-scalatest" % "1.0.0-RC1",
-  "org.typelevel" %% "simulacrum" % "1.0.0"
+  "org.typelevel" %% "discipline-scalatest" % "1.0.0",
+  "org.typelevel" %% "simulacrum" % "1.0.0",
+  "com.stripe" %% "rainier-core" % "0.3.0rc2",
+  "com.stripe" %% "rainier-notebook" % "0.3.0rc2"
 )
 
-val monocleVersion = "2.0.0"
-libraryDependencies ++= Seq(
-  "com.github.julien-truffaut" %%  "monocle-core"  % monocleVersion,
-  "com.github.julien-truffaut" %%  "monocle-macro" % monocleVersion,
-  "com.github.julien-truffaut" %%  "monocle-law"   % monocleVersion % "test"
-)
 
-val circeVersion = "0.12.1"
-libraryDependencies ++= Seq(
-  "io.circe" %% "circe-core",
-  "io.circe" %% "circe-generic",
-  "io.circe" %% "circe-parser"
-).map(_ % circeVersion)
-
+resolvers += Resolver.bintrayRepo("cibotech", "public") // for EvilPlot
 
 resolvers ++= Seq(
   "Sonatype Snapshots" at
     "https://oss.sonatype.org/content/repositories/snapshots/",
   "Sonatype Releases" at
-    "https://oss.sonatype.org/content/repositories/releases/"
+    "https://oss.sonatype.org/content/repositories/releases/",
+  "jitpack" at "https://jitpack.io" // for Jupiter/notebook
 )
 
 scalaVersion := "2.12.10"
