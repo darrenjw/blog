@@ -1,4 +1,4 @@
-# Probabilistic programming with Rainier 0.3
+# Tutorial for Rainier 0.3
 
 
 ```scala mdoc
