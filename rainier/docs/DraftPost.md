@@ -10,7 +10,9 @@ val b = a + 1
 
 val c = Normal(b, a).real
 Model.sample((a,c)).take(10)
+```
 
+```scala mdoc:image:scatter.png
 import com.stripe.rainier.notebook._
 val ac = Model.sample((a,c))
 show("a", "c", scatter(ac))
