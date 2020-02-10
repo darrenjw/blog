@@ -15,10 +15,10 @@ object RainierApp {
     import com.stripe.rainier.core._
     import com.stripe.rainier.compute._
 
-    val a = Uniform(0,1).real
+    val a = Uniform(0,1).latent
     val b = a + 1
 
-    val c = Normal(b, a).real
+    val c = Normal(b, a).latent
     Model.sample((a,c)).take(10)
 
     import com.stripe.rainier.notebook._
@@ -31,7 +31,7 @@ object RainierApp {
 
     val eggs = List[Long](45, 52, 45, 47, 41, 42, 44, 42, 46, 38, 36, 35, 41, 48, 42, 29, 45, 43,
       45, 40, 42, 53, 31, 48, 40, 45, 39, 29, 45, 42)
-    val lambda = Gamma(0.5, 100).real
+    val lambda = Gamma(0.5, 100).latent
 
     show("lambda", density(Model.sample(lambda)))  // show
     displayPlot(density(Model.sample(lambda)).render())
