@@ -82,17 +82,48 @@ object RainierApp {
     })
 
     // now sample from the model
-    val bt = Model.sample((b0, b1))
-    show("b0", "b1", scatter(bt))
-    displayPlot(density(bt map (_._1)).render())
-    displayPlot(density(bt map (_._2)).render())
+    val sampler = EHMC(warmupIterations = 5000, iterations = 500)
+    println("sampling...")
+    val bt = model.sample(sampler)
+    println("finished sampling.")
+    val b0t = bt.predict(b0)
+    show("b0", density(b0t))
+    val b1t = bt.predict(b1)
+    show("b1", density(b1t))
+    displayPlot(density(b0t).render())
+    displayPlot(density(b1t).render())
   }
+
+
+  def anova: Unit = {
+    println("anova")
+    implicit val rng = ScalaRNG(3)
+    val n = 50 // groups
+    val N = 250 // obs per group
+    val mu = 5.0 // overall mean
+    val sigE = 2.0 // random effect SD
+    val sigD = 3.0 // obs SD
+    val effects = Vector.fill(n)(sigE * rng.standardNormal)
+    val data = effects map (e =>
+      Vector.fill(N)(mu + e + sigD * rng.standardNormal))
+
+    // build model
+    val m = Normal(0, 100).latent
+    val sD = LogNormal(0, 10).latent
+    val sE = LogNormal(1, 5).latent
+
+
+
+  }
+
 
   def main(args: Array[String]): Unit = {
     println("main starting")
 
     //tutorial
     logReg
+    //anova
+
 
     println("main finishing")
   }
