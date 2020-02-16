@@ -71,7 +71,6 @@ object RainierApp {
     val y = yb map (b => if (b) 1L else 0L)
     println(y.take(10))
     println(x.take(10))
-
     // now build Rainier model
     val b0 = Normal(0, 5).latent
     val b1 = Normal(0, 5).latent
@@ -80,7 +79,6 @@ object RainierApp {
       val p  = 1.0 / (1.0 + (-theta).exp)
       Bernoulli(p)
     })
-
     // now sample from the model
     val sampler = EHMC(warmupIterations = 5000, iterations = 500)
     println("sampling...")
@@ -97,23 +95,32 @@ object RainierApp {
 
   def anova: Unit = {
     println("anova")
+    // simulate synthetic data
     implicit val rng = ScalaRNG(3)
     val n = 50 // groups
-    val N = 250 // obs per group
+    val N = 150 // obs per group
     val mu = 5.0 // overall mean
     val sigE = 2.0 // random effect SD
     val sigD = 3.0 // obs SD
     val effects = Vector.fill(n)(sigE * rng.standardNormal)
     val data = effects map (e =>
       Vector.fill(N)(mu + e + sigD * rng.standardNormal))
-
     // build model
     val m = Normal(0, 100).latent
     val sD = LogNormal(0, 10).latent
     val sE = LogNormal(1, 5).latent
-
-
-
+    val eff = Vector.fill(n)(Normal(m, sE).latent)
+    val models = (0 until n).map(i =>
+      Model.observe(data(i), Normal(eff(i), sD)))
+    val model = models.reduce{(m1, m2) => m1.merge(m2)}
+    // now sample the model
+    val sampler = EHMC(warmupIterations = 500, iterations = 500)
+    println("sampling...")
+    val trace = model.sample(sampler)
+    println("finished sampling.")
+    val mt = trace.predict(m)
+    show("mu", density(mt))
+    displayPlot(density(mt).render())
   }
 
 
@@ -121,8 +128,8 @@ object RainierApp {
     println("main starting")
 
     //tutorial
-    logReg
-    //anova
+    //logReg
+    anova
 
 
     println("main finishing")
