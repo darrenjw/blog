@@ -46,6 +46,5 @@ show("lambda", density(posterior))
 ```
 
 
-
 #### eof
 

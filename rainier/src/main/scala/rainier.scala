@@ -97,8 +97,10 @@ object RainierApp {
     println("anova")
     // simulate synthetic data
     implicit val rng = ScalaRNG(3)
-    val n = 50 // groups
-    val N = 150 // obs per group
+    //val n = 50 // groups
+    //val N = 150 // obs per group
+    val n = 10 // groups
+    val N = 20 // obs per group
     val mu = 5.0 // overall mean
     val sigE = 2.0 // random effect SD
     val sigD = 3.0 // obs SD
@@ -114,7 +116,7 @@ object RainierApp {
       Model.observe(data(i), Normal(eff(i), sD)))
     val model = models.reduce{(m1, m2) => m1.merge(m2)}
     // now sample the model
-    val sampler = EHMC(warmupIterations = 500, iterations = 500)
+    val sampler = EHMC(warmupIterations = 500, iterations = 5000) // bump up!
     println("sampling...")
     val trace = model.sample(sampler)
     println("finished sampling.")
