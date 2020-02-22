@@ -48,9 +48,32 @@ object RainierApp {
 
     show("lambda", density(posterior))  // show
     displayPlot(density(posterior).render())
-
   }
 
+
+  def nrs: Unit = {
+    // first simulate some data
+    val n = 1000
+    val mu = 3.0
+    val sig = 5.0
+    implicit val rng = ScalaRNG(3)
+    val x = Vector.fill(n)(mu + sig*rng.standardNormal)
+    // now build Rainier model
+    val m = Normal(0,100).latent
+    val s = Gamma(1,10).latent
+    val model = Model.observe(x, Normal(m,s))
+    // now sample from the model
+    val sampler = EHMC(warmupIterations = 5000, iterations = 5000)
+    println("sampling...")
+    val out = model.sample(sampler)
+    println("finished sampling.")
+    val mut = out.predict(m)
+    show("mu", density(mut))
+    val sigt = out.predict(s)
+    show("sig", density(sigt))
+    displayPlot(density(mut).render())
+    displayPlot(density(sigt).render())
+  }
 
   def logReg: Unit = {
     println("logReg")
@@ -116,7 +139,7 @@ object RainierApp {
       Model.observe(data(i), Normal(eff(i), sD)))
     val model = models.reduce{(m1, m2) => m1.merge(m2)}
     // now sample the model
-    val sampler = EHMC(warmupIterations = 500, iterations = 5000) // bump up!
+    val sampler = EHMC(warmupIterations = 500, iterations = 5000)
     println("sampling...")
     val trace = model.sample(sampler)
     println("finished sampling.")
@@ -130,8 +153,9 @@ object RainierApp {
     println("main starting")
 
     //tutorial
+    nrs
     //logReg
-    anova
+    //anova
 
 
     println("main finishing")
