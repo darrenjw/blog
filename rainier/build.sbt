@@ -23,8 +23,10 @@ libraryDependencies  ++= Seq(
   "org.typelevel" %% "simulacrum" % "1.0.0",
   "com.cibo" %% "evilplot" % "0.6.3", // 0.7.0
   "com.cibo" %% "evilplot-repl" % "0.6.3", // 0.7.0
-  "com.stripe" %% "rainier-core" % "0.3.0",
-  "com.stripe" %% "rainier-notebook" % "0.3.0"
+//  "com.stripe" %% "rainier-core" % "0.3.0",
+//  "com.stripe" %% "rainier-notebook" % "0.3.0"
+  "com.stripe" %% "rainier-core" % "0.3.2+2-8a01736f",
+  "com.stripe" %% "rainier-notebook" % "0.3.2+2-8a01736f"
 )
 
 

@@ -14,7 +14,7 @@ object RainierApp {
   import com.cibo.evilplot._
   import com.cibo.evilplot.plot._
 
-
+  // rainier tutorial
   def tutorial: Unit = {
     println("Tutorial")
     val a = Uniform(0,1).latent
@@ -25,21 +25,20 @@ object RainierApp {
 
     val ac = Model.sample((a,c))
     show("a", "c", scatter(ac)) // produces an almond Image, but then what?
-
-    displayPlot(scatter(ac).render())
+    displayPlot(scatter(ac).render()) // use Evilplot to display on console
 
     val eggs = List[Long](45, 52, 45, 47, 41, 42, 44, 42, 46, 38, 36, 35, 41, 48, 42, 29, 45, 43,
       45, 40, 42, 53, 31, 48, 40, 45, 39, 29, 45, 42)
     val lambda = Gamma(0.5, 100).latent
 
     show("lambda", density(Model.sample(lambda)))  // show
-    displayPlot(density(Model.sample(lambda)).render())
+    mcmcSummary("lambda", Model.sample(lambda))
 
     val eggModel = Model.observe(eggs, Poisson(lambda))
     eggModel.optimize(lambda)
     val dozens = eggModel.optimize(lambda / 12)
 
-    val sampler = EHMC(warmupIterations = 5000, iterations = 500)
+    val sampler = EHMC(5000, 500)
     val eggTrace = eggModel.sample(sampler)
     eggTrace.diagnostics
     val thinTrace = eggTrace.thin(2)
@@ -47,12 +46,30 @@ object RainierApp {
     val posterior = eggTrace.predict(lambda)
 
     show("lambda", density(posterior))  // show
-    displayPlot(density(posterior).render())
+    mcmcSummary("lambda", posterior)
   }
 
+  def mcmcSummary(name: String, chain: Seq[Double]): Unit = {
+    println(name)
+    val dens = density(chain).
+      standard().
+      xLabel(name).
+      yLabel("Density")
+    val trace = line(chain.zipWithIndex map (_.swap)).
+      standard().
+      xLabel("Iteration").
+      yLabel(name)
+    //displayPlot(dens.render())
+    //displayPlot(trace.render())
+    displayPlot(Facets(Vector(Vector(trace, dens))).render())
+  }
 
+  def mcmcSummary(chain: Seq[Double]): Unit = mcmcSummary("Variable", chain)
+
+
+  // normal random sample
   def nrs: Unit = {
-    // first simulate some data
+    // first simulate some synthetic data
     val n = 1000
     val mu = 3.0
     val sig = 5.0
@@ -63,18 +80,21 @@ object RainierApp {
     val s = Gamma(1,10).latent
     val model = Model.observe(x, Normal(m,s))
     // now sample from the model
-    val sampler = EHMC(warmupIterations = 5000, iterations = 5000)
+    val sampler = EHMC(5000, 5000)
     println("sampling...")
     val out = model.sample(sampler)
     println("finished sampling.")
+    println(out.diagnostics)
     val mut = out.predict(m)
     show("mu", density(mut))
     val sigt = out.predict(s)
     show("sig", density(sigt))
-    displayPlot(density(mut).render())
-    displayPlot(density(sigt).render())
+    // try some diagnostic plots
+    mcmcSummary("mu", mut)
+    mcmcSummary("sig", sigt)
   }
 
+  // logistic regression
   def logReg: Unit = {
     println("logReg")
     // first simulate some data from a logistic regression model
@@ -103,19 +123,21 @@ object RainierApp {
       Bernoulli(p)
     })
     // now sample from the model
-    val sampler = EHMC(warmupIterations = 5000, iterations = 500)
+    val sampler = EHMC(10000, 1000)
+    //val sampler = HMC(5000, 1000, 10)
     println("sampling...")
     val bt = model.sample(sampler)
     println("finished sampling.")
+    println(bt.diagnostics)
     val b0t = bt.predict(b0)
     show("b0", density(b0t))
     val b1t = bt.predict(b1)
     show("b1", density(b1t))
-    displayPlot(density(b0t).render())
-    displayPlot(density(b1t).render())
+    mcmcSummary("b0", b0t)
+    mcmcSummary("b1", b1t)
   }
 
-
+  // one-way anova model
   def anova: Unit = {
     println("anova")
     // simulate synthetic data
@@ -139,13 +161,21 @@ object RainierApp {
       Model.observe(data(i), Normal(eff(i), sD)))
     val model = models.reduce{(m1, m2) => m1.merge(m2)}
     // now sample the model
-    val sampler = EHMC(warmupIterations = 500, iterations = 5000)
+    val sampler = EHMC(5000, 5000)
     println("sampling...")
     val trace = model.sample(sampler)
     println("finished sampling.")
+    println(trace.diagnostics)
     val mt = trace.predict(m)
     show("mu", density(mt))
-    displayPlot(density(mt).render())
+    mcmcSummary("mu", mt)
+    mcmcSummary("sigE", trace.predict(sE))
+    mcmcSummary("sigD", trace.predict(sD))
+  }
+
+  // repeat one-way anova, but without merging
+  def anova2: Unit = {
+
   }
 
 
@@ -153,8 +183,8 @@ object RainierApp {
     println("main starting")
 
     //tutorial
-    nrs
-    //logReg
+    //nrs
+    logReg
     //anova
 
 
