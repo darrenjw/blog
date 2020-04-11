@@ -123,8 +123,8 @@ object RainierApp {
       Bernoulli(p)
     })
     // now sample from the model
-    val sampler = EHMC(10000, 1000)
-    //val sampler = HMC(5000, 1000, 10)
+    //val sampler = EHMC(10000, 1000)
+    val sampler = HMC(5000, 1000, 50)
     println("sampling...")
     val bt = model.sample(sampler)
     println("finished sampling.")
