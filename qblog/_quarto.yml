@@ -1,0 +1,23 @@
+project:
+  type: website
+
+website:
+  title: "DJW's blog"
+  site-url: https://darrenjw.github.io/blog/
+  description: "Darren Wilkinson's blog"
+  navbar:
+    right:
+      - about.qmd
+      - icon: rss
+        href: index.xml
+      - icon: github
+        href: https://github.com/darrenjw/blog/
+      - icon: twitter
+        href: https://twitter.com/darrenjw
+format:
+  html:
+    theme: united
+    css: styles.css
+
+
+
