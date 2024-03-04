@@ -76,7 +76,7 @@
 
  ]]></description>
   <guid>https://darrenjw.github.io/blog/posts/r-test/index.html</guid>
-  <pubDate>Mon, 04 Mar 2024 17:51:52 GMT</pubDate>
+  <pubDate>Mon, 04 Mar 2024 19:43:07 GMT</pubDate>
 </item>
 <item>
   <title></title>
@@ -90,9 +90,16 @@
 <p>A test post including some python code</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">x <span class="op" style="color: #5E5E5E;">=</span> [<span class="dv" style="color: #AD0000;">1</span>,<span class="dv" style="color: #AD0000;">2</span>,<span class="dv" style="color: #AD0000;">3</span>]</span>
-<span id="cb1-2"><span class="bu" style="color: null;">print</span>(x[<span class="dv" style="color: #AD0000;">1</span>])</span></code></pre></div>
+<span id="cb1-2"><span class="bu" style="color: null;">print</span>(x[<span class="dv" style="color: #AD0000;">1</span>])</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="im" style="color: #00769E;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;">as</span> plt</span>
+<span id="cb1-5">fig, axis <span class="op" style="color: #5E5E5E;">=</span> plt.subplots()</span>
+<span id="cb1-6">axis.plot([<span class="dv" style="color: #AD0000;">0</span>,<span class="dv" style="color: #AD0000;">1</span>,<span class="dv" style="color: #AD0000;">2</span>,<span class="dv" style="color: #AD0000;">3</span>,<span class="dv" style="color: #AD0000;">4</span>,<span class="dv" style="color: #AD0000;">5</span>], [<span class="dv" style="color: #AD0000;">3</span>,<span class="dv" style="color: #AD0000;">4</span>,<span class="dv" style="color: #AD0000;">6</span>,<span class="dv" style="color: #AD0000;">5</span>,<span class="dv" style="color: #AD0000;">2</span>,<span class="dv" style="color: #AD0000;">4</span>])</span></code></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>2</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="https://darrenjw.github.io/blog/posts/py-test/index_files/figure-html/cell-2-output-2.png" width="571" height="411"></p>
 </div>
 </div>
 <p>Blah.</p>
@@ -102,7 +109,7 @@
 
  ]]></description>
   <guid>https://darrenjw.github.io/blog/posts/py-test/index.html</guid>
-  <pubDate>Mon, 04 Mar 2024 17:51:52 GMT</pubDate>
+  <pubDate>Mon, 04 Mar 2024 19:43:07 GMT</pubDate>
 </item>
 </channel>
 </rss>

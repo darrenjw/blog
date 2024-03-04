@@ -25,7 +25,7 @@
     "href": "posts/py-test/index.html",
     "title": "DJW's blog",
     "section": "",
-    "text": "Python test\nA test post including some python code\n\nx = [1,2,3]\nprint(x[1])\n\n2\n\n\nBlah."
+    "text": "Python test\nA test post including some python code\n\nx = [1,2,3]\nprint(x[1])\n\nimport matplotlib.pyplot as plt\nfig, axis = plt.subplots()\naxis.plot([0,1,2,3,4,5], [3,4,6,5,2,4])\n\n2\n\n\n\n\n\nBlah."
   },
   {
     "objectID": "posts/post-with-code/index.html",

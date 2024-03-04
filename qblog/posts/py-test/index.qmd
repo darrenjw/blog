@@ -4,5 +4,9 @@ A test post including some python code
 ```{python}
 x = [1,2,3]
 print(x[1])
+
+import matplotlib.pyplot as plt
+fig, axis = plt.subplots()
+axis.plot([0,1,2,3,4,5], [3,4,6,5,2,4])
 ```
 Blah.

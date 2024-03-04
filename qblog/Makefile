@@ -1,5 +1,6 @@
 # Makefile
 
+CURRENT=py-test
 
 FORCE:
 	make render
@@ -17,7 +18,7 @@ publish:
 	git commit -a && git push
 
 edit:
-	emacs Makefile *.yml *.qmd &
+	emacs Makefile *.yml *.qmd posts/$(CURRENT)/*.qmd &
 
 
 # eof
