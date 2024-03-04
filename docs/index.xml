@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss  xmlns:atom="http://www.w3.org/2005/Atom" 
+      xmlns:media="http://search.yahoo.com/mrss/" 
+      xmlns:content="http://purl.org/rss/1.0/modules/content/" 
+      xmlns:dc="http://purl.org/dc/elements/1.1/" 
+      version="2.0">
+<channel>
+<title>DJW&#39;s blog</title>
+<link>https://darrenjw.github.io/blog/index.html</link>
+<atom:link href="https://darrenjw.github.io/blog/index.xml" rel="self" type="application/rss+xml"/>
+<description>Darren Wilkinson&#39;s blog</description>
+<generator>quarto-1.2.335</generator>
+<lastBuildDate>Sun, 03 Mar 2024 00:00:00 GMT</lastBuildDate>
+<item>
+  <title>Post With Code</title>
+  <dc:creator>Harlow Malloc</dc:creator>
+  <link>https://darrenjw.github.io/blog/posts/post-with-code/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is a post with executable code.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <category>code</category>
+  <category>analysis</category>
+  <guid>https://darrenjw.github.io/blog/posts/post-with-code/index.html</guid>
+  <pubDate>Sun, 03 Mar 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://darrenjw.github.io/blog/posts/post-with-code/image.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title>Welcome To My Blog</title>
+  <dc:creator>Tristan O&#39;Malley</dc:creator>
+  <link>https://darrenjw.github.io/blog/posts/welcome/index.html</link>
+  <description><![CDATA[ 
+
+
+
+
+<p>This is the first post in a Quarto blog. Welcome!</p>
+<p><img src="https://darrenjw.github.io/blog/posts/welcome/thumbnail.jpg" class="img-fluid"></p>
+<p>Since this post doesn’t specify an explicit <code>image</code>, the first image in the post will be used in the listing page of posts.</p>
+
+
+
+ ]]></description>
+  <category>news</category>
+  <guid>https://darrenjw.github.io/blog/posts/welcome/index.html</guid>
+  <pubDate>Thu, 29 Feb 2024 00:00:00 GMT</pubDate>
+  <media:content url="https://darrenjw.github.io/blog/posts/welcome/thumbnail.jpg" medium="image" type="image/jpeg"/>
+</item>
+<item>
+  <title></title>
+  <link>https://darrenjw.github.io/blog/posts/r-test/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="r-test" class="level1">
+<h1>R test</h1>
+<p>A test post including some R code.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><span class="fu" style="color: #4758AB;">hist</span>(<span class="fu" style="color: #4758AB;">rnorm</span>(<span class="dv" style="color: #AD0000;">1000</span>))</span></code></pre></div>
+<div class="cell-output-display">
+<p><img src="https://darrenjw.github.io/blog/posts/r-test/index_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<p>Blah.</p>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://darrenjw.github.io/blog/posts/r-test/index.html</guid>
+  <pubDate>Mon, 04 Mar 2024 17:51:52 GMT</pubDate>
+</item>
+<item>
+  <title></title>
+  <link>https://darrenjw.github.io/blog/posts/py-test/index.html</link>
+  <description><![CDATA[ 
+
+
+
+<section id="python-test" class="level1">
+<h1>Python test</h1>
+<p>A test post including some python code</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1">x <span class="op" style="color: #5E5E5E;">=</span> [<span class="dv" style="color: #AD0000;">1</span>,<span class="dv" style="color: #AD0000;">2</span>,<span class="dv" style="color: #AD0000;">3</span>]</span>
+<span id="cb1-2"><span class="bu" style="color: null;">print</span>(x[<span class="dv" style="color: #AD0000;">1</span>])</span></code></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>2</code></pre>
+</div>
+</div>
+<p>Blah.</p>
+
+
+</section>
+
+ ]]></description>
+  <guid>https://darrenjw.github.io/blog/posts/py-test/index.html</guid>
+  <pubDate>Mon, 04 Mar 2024 17:51:52 GMT</pubDate>
+</item>
+</channel>
+</rss>

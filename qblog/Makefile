@@ -2,12 +2,16 @@
 
 
 FORCE:
-	quarto render
+	make render
 
 preview:
 	quarto preview
 
+render:
+	quarto render
+
 publish:
+	make render
 	cp -r _site/* ../docs/
 	git add ../docs/*
 	git commit -a && git push

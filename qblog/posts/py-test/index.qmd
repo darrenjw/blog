@@ -1,0 +1,8 @@
+# Python test
+
+A test post including some python code
+```{python}
+x = [1,2,3]
+print(x[1])
+```
+Blah.

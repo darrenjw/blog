@@ -1,0 +1,8 @@
+# R test
+
+A test post including some R code.
+```{r}
+hist(rnorm(1000))
+```
+Blah.
+
