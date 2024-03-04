@@ -1,3 +1,10 @@
+---
+title: "R test"
+author: "Darren Wilkinson"
+date: "2024-03-04"
+categories: [R, code]
+---
+
 # R test
 
 A test post including some R code.

@@ -4,12 +4,12 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "About this blog"
+    "text": "This is the blog of Darren Wilkinson.\nThis blog is intended to cover my reflections on mathematics, statistics, machine learning, AI, computing and biology, and especially their interactions, and relationship with “big data” and data science. This blog replaces my two wordpress blogs: my main blog and my personal blog. Wordpress served me well for more than a decade, but these days I dislike having to write anything other than Quarto, so I’ve taken the plunge and moved to a Quarto based blog."
   },
   {
     "objectID": "posts/r-test/index.html",
     "href": "posts/r-test/index.html",
-    "title": "DJW's blog",
+    "title": "R test",
     "section": "",
     "text": "R test\nA test post including some R code.\n\nhist(rnorm(1000))\n\n\n\n\nBlah."
   },
@@ -23,7 +23,7 @@
   {
     "objectID": "posts/py-test/index.html",
     "href": "posts/py-test/index.html",
-    "title": "DJW's blog",
+    "title": "Python test",
     "section": "",
     "text": "Python test\nA test post including some python code\n\nx = [1,2,3]\nprint(x[1])\n\nimport matplotlib.pyplot as plt\nfig, axis = plt.subplots()\naxis.plot([0,1,2,3,4,5], [3,4,6,5,2,4])\n\n2\n\n\n\n\n\nBlah."
   },
@@ -39,6 +39,6 @@
     "href": "index.html",
     "title": "Darren Wilkinson’s blog",
     "section": "",
-    "text": "R test\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\n\n\nPython test\n\n\n\n\n\n\n\n\n\n\n \n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nMar 3, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nFeb 29, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "R test\n\n\n\n\n\n\n\nR\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nMar 4, 2024\n\n\nDarren Wilkinson\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPython test\n\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nMar 4, 2024\n\n\nDarren Wilkinson\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nMar 3, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nFeb 29, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
   }
 ]

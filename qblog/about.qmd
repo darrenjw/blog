@@ -6,14 +6,17 @@ about:
   links:
     - icon: twitter
       text: Twitter
-      href: https://twitter.com
+      href: https://twitter.com/darrenjw
     - icon: linkedin
       text: LinkedIn
-      href: https://linkedin.com
+      href: https://linkedin.com/in/darrenjwilkinson/
     - icon: github
       text: Github
-      href: https://github.com
+      href: https://github.com/darrenjw
 
 ---
 
-About this blog
+This is the blog of [Darren Wilkinson](https://darrenjw.github.io/).
+
+This blog is intended to cover my reflections on mathematics, statistics, machine learning, AI, computing and biology, and especially their interactions, and relationship with “big data” and data science. This blog replaces my two wordpress blogs: my [main blog](https://darrenjw.wordpress.com/) and my [personal blog](https://darrenjw2.wordpress.com). [Wordpress](https://wordpress.com/) served me well for more than a decade, but these days I dislike having to write anything other than [Quarto](http://quarto.org/), so I've taken the plunge and moved to a Quarto based blog.
+

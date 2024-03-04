@@ -1,6 +1,6 @@
 # Makefile
 
-CURRENT=py-test
+CURRENT=draft
 
 FORCE:
 	make render

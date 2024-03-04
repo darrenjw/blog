@@ -1,0 +1,12 @@
+---
+title: "Draft post"
+author: "Darren Wilkinson"
+date: "2024-03-05"
+categories: [stats]
+draft: true
+---
+
+# Draft post
+
+This shouldn't appear in the published site. Blah. A draft post.
+
