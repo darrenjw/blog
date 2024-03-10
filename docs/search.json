@@ -14,13 +14,6 @@
     "text": "R test\nA test post including some R code.\n\nhist(rnorm(1000))\n\n\n\n\nBlah."
   },
   {
-    "objectID": "posts/welcome/index.html",
-    "href": "posts/welcome/index.html",
-    "title": "Welcome To My Blog",
-    "section": "",
-    "text": "This is the first post in a Quarto blog. Welcome!\n\nSince this post doesn’t specify an explicit image, the first image in the post will be used in the listing page of posts."
-  },
-  {
     "objectID": "posts/py-test/index.html",
     "href": "posts/py-test/index.html",
     "title": "Python test",
@@ -28,17 +21,10 @@
     "text": "Python test\nA test post including some python code\n\nx = [1,2,3]\nprint(x[1])\n\nimport matplotlib.pyplot as plt\nfig, axis = plt.subplots()\naxis.plot([0,1,2,3,4,5], [3,4,6,5,2,4])\n\n2\n\n\n\n\n\nBlah."
   },
   {
-    "objectID": "posts/post-with-code/index.html",
-    "href": "posts/post-with-code/index.html",
-    "title": "Post With Code",
-    "section": "",
-    "text": "This is a post with executable code."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Darren Wilkinson’s blog",
     "section": "",
-    "text": "R test\n\n\n\n\n\n\n\nR\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nMar 4, 2024\n\n\nDarren Wilkinson\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nPython test\n\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nMar 4, 2024\n\n\nDarren Wilkinson\n\n\n\n\n\n\n  \n\n\n\n\nPost With Code\n\n\n\n\n\n\n\nnews\n\n\ncode\n\n\nanalysis\n\n\n\n\n\n\n\n\n\n\n\nMar 3, 2024\n\n\nHarlow Malloc\n\n\n\n\n\n\n  \n\n\n\n\nWelcome To My Blog\n\n\n\n\n\n\n\nnews\n\n\n\n\n\n\n\n\n\n\n\nFeb 29, 2024\n\n\nTristan O’Malley\n\n\n\n\n\n\nNo matching items"
+    "text": "R test\n\n\n\n\n\n\n\nR\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nMar 4, 2024\n\n\nDarren Wilkinson\n\n\n\n\n\n\n\n\nPython test\n\n\n\n\n\n\n\npython\n\n\ncode\n\n\n\n\n\n\n\n\n\n\n\nMar 4, 2024\n\n\nDarren Wilkinson\n\n\n\n\n\n\nNo matching items"
   }
 ]
